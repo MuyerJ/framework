@@ -11,5 +11,11 @@
 
     <artifactId>eureka-consumer9001</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.muyer</groupId>
+            <artifactId>common-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>
