@@ -7,9 +7,10 @@
     <file url="file://$PROJECT_DIR$/dubbo/dubbo-consumer" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo/dubbo-inteface" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo/dubbo-service" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/eureka-consumer9001" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/eureka-provider8001" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/eureka7001" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/eureka7002" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud/eureka-consumer9001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud/eureka-provider8001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud/eureka7001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud/eureka7002" charset="UTF-8" />
   </component>
 </project>
