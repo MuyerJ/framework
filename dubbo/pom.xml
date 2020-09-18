@@ -15,6 +15,7 @@
         <module>dubbo-inteface</module>
         <module>dubbo-service</module>
         <module>dubbo-consumer</module>
+        <module>spi</module>
     </modules>
 
 

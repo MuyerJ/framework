@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/dubbo/dubbo-consumer/dubbo-consumer.iml" filepath="$PROJECT_DIR$/dubbo/dubbo-consumer/dubbo-consumer.iml" />
       <module fileurl="file://$PROJECT_DIR$/dubbo/dubbo-inteface/dubbo-inteface.iml" filepath="$PROJECT_DIR$/dubbo/dubbo-inteface/dubbo-inteface.iml" />
       <module fileurl="file://$PROJECT_DIR$/dubbo/dubbo-service/dubbo-service.iml" filepath="$PROJECT_DIR$/dubbo/dubbo-service/dubbo-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dubbo/spi/spi.iml" filepath="$PROJECT_DIR$/dubbo/spi/spi.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud/springcloud.iml" filepath="$PROJECT_DIR$/springcloud/springcloud.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud-parent.iml" filepath="$PROJECT_DIR$/springcloud-parent.iml" />
     </modules>

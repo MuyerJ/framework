@@ -10,18 +10,20 @@
         <module name="dubbo-consumer" />
         <module name="dubbo-inteface" />
         <module name="dubbo-service" />
+        <module name="spi" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="common-api" target="1.8" />
-      <module name="dubbo" target="1.8" />
-      <module name="dubbo-consumer" target="1.8" />
-      <module name="dubbo-inteface" target="1.8" />
-      <module name="dubbo-service" target="1.8" />
+      <module name="dubbo" target="1.5" />
+      <module name="dubbo-consumer" target="1.5" />
+      <module name="dubbo-inteface" target="1.5" />
+      <module name="dubbo-service" target="1.5" />
       <module name="eureka-consumer9001" target="1.8" />
       <module name="eureka-provider8001" target="1.8" />
       <module name="eureka7001" target="1.8" />
       <module name="eureka7002" target="1.8" />
+      <module name="spi" target="1.5" />
       <module name="springcloud" target="1.8" />
       <module name="springcloud-parent" target="1.5" />
     </bytecodeTargetLevel>
