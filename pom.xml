@@ -12,6 +12,7 @@
         <module>common-api</module>
         <module>dubbo</module>
         <module>springcloud</module>
+        <module>java-demo</module>
     </modules>
 
 </project>

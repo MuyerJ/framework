@@ -17,10 +17,6 @@
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>com.muyer</groupId>
-            <artifactId>common-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+
     </dependencies>
 </project>

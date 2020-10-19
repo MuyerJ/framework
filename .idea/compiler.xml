@@ -6,8 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="common-api" />
         <module name="dubbo-sample" />
+        <module name="java-demo" />
         <module name="spi" />
       </profile>
     </annotationProcessing>
@@ -22,6 +22,7 @@
       <module name="eureka-provider8001" target="1.8" />
       <module name="eureka7001" target="1.8" />
       <module name="eureka7002" target="1.8" />
+      <module name="java-demo" target="1.5" />
       <module name="spi" target="6" />
       <module name="springcloud" target="1.8" />
       <module name="springcloud-parent" target="1.5" />
