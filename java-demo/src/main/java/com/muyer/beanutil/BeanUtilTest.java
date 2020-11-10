@@ -18,5 +18,6 @@ public class BeanUtilTest {
         BeanUtils.copyProperties(a, b);
         System.out.println(a);
         System.out.println(b);
+
     }
 }
