@@ -12,12 +12,12 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
-      <module name="dubbo" target="1.5" />
-      <module name="dubbo-sample" target="1.5" />
-      <module name="java-demo" target="1.5" />
-      <module name="spi" target="6" />
+      <module name="dubbo" target="8" />
+      <module name="dubbo-sample" target="8" />
+      <module name="java-demo" target="8" />
+      <module name="spi" target="8" />
       <module name="springcloud" target="1.8" />
-      <module name="springcloud-parent" target="1.5" />
+      <module name="springcloud-parent" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

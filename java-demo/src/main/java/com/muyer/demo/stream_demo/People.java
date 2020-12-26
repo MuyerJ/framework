@@ -1,4 +1,4 @@
-package com.muyer.stream;
+package com.muyer.demo.stream_demo;
 
 /**
  * Description:

@@ -1,7 +1,8 @@
-package com.muyer.stream;
+package com.muyer.demo.stream_demo;
+
+import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
  *
  * @author YeJiang
  */
-public class Test1 {
+public class Test_list {
     static List<People> ids = new ArrayList<>();
 
     private static void init() {
@@ -23,7 +24,7 @@ public class Test1 {
 
     public static void main(String[] args) {
         init();
-        fun1();
+        fun2();
     }
 
     /**
@@ -38,7 +39,8 @@ public class Test1 {
      *     .stream().distinct().collect(Collectors.toList());//去重
      */
     private static void fun2() {
-
+        ArrayList<Integer> list = Lists.newArrayList(1, null, 2, 3, 4, 5, 6, null);
+        list.stream().filter(o->o!=null).forEach(System.out::println);
     }
 
     /**
@@ -48,6 +50,24 @@ public class Test1 {
      *             System.out.println(list.get(i)+"----------------"+list.get(j));
      *         }
      *      }
+     *
+     */
+
+    /**
+     * list.stream().mapToDouble求最大、最小、和、平均值
+     *  list.stream().mapToDouble(User::getAge).sum()//和
+     *  list.stream().mapToDouble(User::getAge).max()//最大
+     *  list.stream().mapToDouble(User::getAge).min()//最小
+     *  list.stream().mapToDouble(User::getAge).average()//平均值
+     */
+
+    /**
+     * 获取最新时间
+     *  Optional<Date> maxDate = list.stream()
+     *      .max((p1,p2) -> p1.getDate().compareTo(p2.getDate()))
+     *      .map(object -> object.getDate());
+     *   Date date = maxDate.get();
+     *
      *
      */
 

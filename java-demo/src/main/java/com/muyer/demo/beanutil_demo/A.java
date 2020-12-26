@@ -1,4 +1,4 @@
-package com.muyer.beanutil;
+package com.muyer.demo.beanutil_demo;
 
 /**
  * Description:

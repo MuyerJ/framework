@@ -1,4 +1,4 @@
-package com.muyer.threadlocal;
+package com.muyer.demo.threadlocal_demo;
 
 /**
  * Description:
