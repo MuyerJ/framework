@@ -9,6 +9,7 @@
         <module name="dubbo-sample" />
         <module name="java-demo" />
         <module name="spi" />
+        <module name="spingboot-web-mvc" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
@@ -16,6 +17,9 @@
       <module name="dubbo-sample" target="1.8" />
       <module name="java-demo" target="1.8" />
       <module name="spi" target="6" />
+      <module name="spingboot-web-mvc" target="1.8" />
+      <module name="spring-application" target="1.8" />
+      <module name="spring-web-mvc" target="1.8" />
       <module name="springcloud" target="1.8" />
       <module name="springcloud-parent" target="1.8" />
     </bytecodeTargetLevel>

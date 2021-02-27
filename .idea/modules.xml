@@ -6,7 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/dubbo/dubbo-sample/dubbo-sample.iml" filepath="$PROJECT_DIR$/dubbo/dubbo-sample/dubbo-sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/java-demo/java-demo.iml" filepath="$PROJECT_DIR$/java-demo/java-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/dubbo/spi/spi.iml" filepath="$PROJECT_DIR$/dubbo/spi/spi.iml" />
-      <module fileurl="file://$PROJECT_DIR$/springcloud/springcloud.iml" filepath="$PROJECT_DIR$/springcloud/springcloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spingboot-web-mvc/spingboot-web-mvc.iml" filepath="$PROJECT_DIR$/spingboot-web-mvc/spingboot-web-mvc.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud-parent.iml" filepath="$PROJECT_DIR$/springcloud-parent.iml" />
     </modules>
   </component>
