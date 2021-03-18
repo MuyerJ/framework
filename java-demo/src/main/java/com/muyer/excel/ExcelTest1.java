@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -16,7 +18,19 @@ import java.util.List;
  */
 public class ExcelTest1 {
     public static void main(String[] args) throws Exception {
-        excelAdd2();
+        fun2();
+    }
+
+    private static void fun2() {
+        List<ExcelDto2> excel = EasyExcel.read(new File("E:\\交易记录.xlsx")).autoTrim(true).head(ExcelDto2.class).sheet().doReadSync();
+        Set<String> s1 = excel.stream().map(ExcelDto2::getX1).collect(Collectors.toSet());
+        Set<String> s2 = excel.stream().map(ExcelDto2::getX2).collect(Collectors.toSet());
+        for(String s :s2){
+            if(s1.contains(s)){
+                continue;
+            }
+            System.out.println(s);
+        }
     }
 
     public static void excelAdd2() throws Exception {
