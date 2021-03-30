@@ -11,10 +11,17 @@ import java.util.regex.Pattern;
  */
 public class Test {
     static Pattern p = Pattern.compile("(?<=\\{\").+?(?=\":)");
+    static Pattern p2 = Pattern.compile("(?<=\\+).+?(?=小时)");
 
     public static void main(String[] args) {
+        String str ="时间+0.11122小时";
+        Matcher matcher = p2.matcher(str);
+        if(matcher.find()){
+            System.out.println(matcher.group().trim());
+        }
+    }
 
-
+    private static void fun1() {
         String str = "[\n" +
                 "    {\n" +
                 "        \"商编\":\"700000007372051\"\n" +
