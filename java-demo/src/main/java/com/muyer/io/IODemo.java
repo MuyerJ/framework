@@ -16,7 +16,6 @@ public class IODemo {
 
     public static void main(String[] args) throws Exception {
         //读数据
-        StringBuffer sb = new StringBuffer("");
         Reader reader = new FileReader("F:" + File.separator + "new 2.txt");
         BufferedReader bufferedReader = new BufferedReader(reader);
         String lineStr = "";
