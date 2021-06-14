@@ -22,6 +22,7 @@
         <module>java-demo</module>
         <module>spingboot-web-mvc</module>
         <module>zookeeper</module>
+        <module>cache</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->
