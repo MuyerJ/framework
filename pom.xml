@@ -24,6 +24,7 @@
         <module>zookeeper</module>
         <module>cache</module>
         <module>spingdata-jpa</module>
+        <module>spring-security</module>
     </modules>
 
     <dependencies>
@@ -36,6 +37,14 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.7</version>
+        </dependency>
+        <!-- lombok（通过注解的方式，在编译时自动为属性生成构造器、getter/setter、equals、hashcode、toString方法。
+        在源码中没有getter和setter方法，但是在编译生成的字节码文件中有getter和setter方法。） -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.20</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <!-- 统一管理jar包版本 -->
