@@ -23,8 +23,16 @@
         <module>spingboot-web-mvc</module>
         <module>zookeeper</module>
         <module>cache</module>
+        <module>spingboot-jpa</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+    </dependencies>
     <!-- 统一管理jar包版本 -->
     <properties>
         <spring.version>4.3.11.RELEASE</spring.version>
