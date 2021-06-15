@@ -23,7 +23,7 @@
         <module>spingboot-web-mvc</module>
         <module>zookeeper</module>
         <module>cache</module>
-        <module>spingboot-jpa</module>
+        <module>spingdata-jpa</module>
     </modules>
 
     <dependencies>
@@ -31,6 +31,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
         </dependency>
     </dependencies>
     <!-- 统一管理jar包版本 -->
