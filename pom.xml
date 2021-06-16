@@ -24,7 +24,7 @@
         <module>zookeeper</module>
         <module>cache</module>
         <module>spingdata-jpa</module>
-        <module>spring-security</module>
+        <module>springmvc-session-RBAC</module>
     </modules>
 
     <dependencies>
