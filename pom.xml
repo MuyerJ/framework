@@ -25,6 +25,7 @@
         <module>cache</module>
         <module>spingdata-jpa</module>
         <module>springmvc-session-RBAC</module>
+        <module>springmvc-security</module>
     </modules>
 
     <dependencies>
