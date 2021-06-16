@@ -1,5 +1,6 @@
 package com.muyer.security.service;
 
+import com.google.common.collect.Lists;
 import com.muyer.security.model.AuthenticationReq;
 import com.muyer.security.model.User;
 import org.apache.commons.lang3.StringUtils;
@@ -21,9 +22,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public static Map<String, User> map = new HashMap<String, User>();
 
     static {
-        map.put("yejiang", new User("1", "yejiang", "123456", "110", "yejiang"));
-        map.put("sunxu", new User("2", "sunxu", "123456", "112", "sunxu"));
-
+        map.put("yejiang", new User("1", "yejiang", "123456", "110", "yejiang", Lists.newArrayList("r1")));
+        map.put("sunxu", new User("2", "sunxu", "123456", "112", "sunxu", Lists.newArrayList("r2")));
+        map.put("sunxu2", new User("3", "sunxu2", "123456", "112", "sunxu", Lists.newArrayList("r1", "r2")));
+        map.put("sunxu3", new User("3", "sunxu2", "123456", "112", "sunxu", Lists.newArrayList()));
     }
 
 

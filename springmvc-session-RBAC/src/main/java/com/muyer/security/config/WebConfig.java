@@ -1,5 +1,7 @@
 package com.muyer.security.config;
 
+import com.muyer.security.interceptor.AuthenticationInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -26,6 +28,9 @@ import java.util.List;
 @ComponentScan(basePackages = "com.muyer.security",
         includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class)})
 public class WebConfig implements WebMvcConfigurer {
+    @Autowired
+    private AuthenticationInterceptor authenticationInterceptor;
+
 //    @Bean
 //    public InternalResourceViewResolver viewResolver() {
 //        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -80,7 +85,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry interceptorRegistry) {
-
+        interceptorRegistry.addInterceptor(authenticationInterceptor).addPathPatterns("/r/**");
     }
 
     @Override
