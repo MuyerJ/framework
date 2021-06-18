@@ -17,14 +17,13 @@ import java.util.stream.Stream;
 public class Test {
 
     public static void main(String[] args) {
-//        byte[] meLicenceTypeFirstLetter = "A3".getBytes();
-//        byte[] herLicenceTypeFirstLetter = "A2".getBytes();
-//        if (meLicenceTypeFirstLetter[0] > herLicenceTypeFirstLetter[0] ||
-//                meLicenceTypeFirstLetter[0] == herLicenceTypeFirstLetter[0] && meLicenceTypeFirstLetter[1] < herLicenceTypeFirstLetter[1]) {
-//        }
-        List<Object> collect = Stream.of(null, Lists.newArrayList()).flatMap(Collection::stream).distinct().collect(Collectors.toList());
+        fun1();
+        System.out.println(2);
+    }
 
+    private static void fun1() {
         System.out.println(1);
+        return;
     }
 
     private static void Test1() {

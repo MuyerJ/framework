@@ -48,10 +48,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                //配置
+                .antMatchers("/r/r1").hasAuthority("r1")
+                .antMatchers("/r/r2").hasAuthority("r2")
                 .antMatchers("/r/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin().successForwardUrl("/login-success");
+        http.csrf().disable();
 
     }
 }
