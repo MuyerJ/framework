@@ -1,4 +1,4 @@
-package com.muyer;
+package com;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,10 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version
  */
 
-@SpringBootApplication(scanBasePackages = {"com.muyer"})
-public class Application {
+@SpringBootApplication(scanBasePackages = {"com.muyer.*"})
+public class ApplicationSecutiry {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(ApplicationSecutiry.class, args);
     }
 }
