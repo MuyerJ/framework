@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version
  */
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.muyer"})
 public class Application {
 
     public static void main(String[] args) {
