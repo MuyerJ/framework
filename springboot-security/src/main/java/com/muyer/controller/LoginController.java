@@ -1,7 +1,6 @@
 package com.muyer.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,10 +14,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class LoginController {
 
+    @RequestMapping("/login-view")
+    public String hello() {
+        //这边我们,默认是返到templates下的login.html
+        return "login";
+    }
+
     @RequestMapping(value = "/login-success", produces = "text/plain;charset=utf-8")
     @ResponseBody
-    public String loginRequest() {
-        return "登录成功";
+    public String loginRequest1() {
+        return "login-success";
+    }
+
+    @RequestMapping(value = "/login-fail", produces = "text/plain;charset=utf-8")
+    @ResponseBody
+    public String loginRequest2() {
+        return "login-fail";
     }
 
     @GetMapping(value = "/r/r1", produces = "text/plain;charset=utf-8")
@@ -34,10 +45,4 @@ public class LoginController {
         return "访问资源r2";
     }
 
-    //    @RequestMapping({"/", "/index"})
-    @RequestMapping({"/index"})
-    public String index(Model model) {
-        model.addAttribute("msg", "index");
-        return "index";
-    }
 }
