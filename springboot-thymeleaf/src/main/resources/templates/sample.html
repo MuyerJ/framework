@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="renderer" content="webkit">
+        <title>Thymeleaf简单用法</title>
+    </head>
+    <body class="fixed-sidebar full-height-layout gray-bg" style="height: 400px; overflow:scroll">
+        <h1>thymeleaf中th:text和th:utext的区别</h1>
+        <!--
+            他们都是 “在页面中输出值”
+            用th:text不会解析html，用th:utext会解析html，在页面中显示相应的样式
+        -->
+        <div>
+            <span th:text="${msg}"></span>
+            <br>
+            <span th:utext="${msg}"></span>
+        </div>
+
+        <hr/>
+        <h1>th:value</h1>
+        <div>
+            <input th:text="${msg}"/>
+            <br>
+            <input th:value="${msg}"/>
+        </div>
+
+
+        <hr/>
+        <h1>strings</h1>
+        <!--${#strings.isEmpty(key)}	判断字符串是否为空，如果为空返回 true，否则返回 false-->
+        <span th:text="${#strings.isEmpty(msg)}"></span>
+        <!--${#strings.contains(msg,‘T’)}	判断字符串是否包含指定的子串，如果包含返回 true，否则返回 false-->
+        <br>
+        <span th:text="${#strings.contains(msg,'yejiang')}"></span>
+
+
+        <!--${#strings.startsWith(msg,‘a’)}  /  ${#strings.endsWith(msg,‘a’)}  是否以某个子串结尾或者开头-->
+        <br>
+        <span th:text="${#strings.startsWith(msg,'j')}"></span>
+        <span th:text="${#strings.startsWith(msg,'g')}"></span>
+        <!--其他：
+            ${#strings.length(msg)}	返回字符串的长度
+            ${#strings.indexOf(msg,‘h’)}	查找子串的位置，并返回该子串的下标，如果没找到则返回-1
+            ${#strings.substring(msg,13)}
+            ${#strings.substring(msg,13,15)}	截取子串，用户与 jdk String 类下 SubString 方法相同
+            ${#strings.toUpperCase(msg)}	字符串转大写。
+            ${#strings.toLowerCase(msg)}	字符串转小写。
+        -->
+
+        <hr/>
+        <h1>dates</h1>
+        <!--
+            ${#dates.format(key)}	格式化日期，默认的以浏览器默认语言为格式化标准
+            ${#dates.format(key,‘yyy/MM/dd’)}	按照自定义的格式做日期转换
+            ${#dates.year(key)}	取年
+            ${#dates.month(key)}	取月
+            ${#dates.day(key)}	取日
+        -->
+
+        <span th:text="${now}"></span><br>
+        <span th:text="${#dates.format(now)}"></span><br>
+        <span th:text="${#dates.format(now,'yyyy-MM-dd HH:mm:ss')}"></span><br>
+        <span th:text="${#dates.year(now)}"></span><br>
+
+
+        <hr/>
+        <h1>if</h1>
+        <span th:if="${#strings.contains(msg,'yejiang')}" th:text="yejiang"></span>
+        <span th:if="${id gt 5}" th:text="xunxu"></span>
+        <hr/>
+        <h1>switch</h1>
+        <span th:switch="${id}">
+            <span th:case="1" th:text="1"></span>
+            <span th:case="2" th:text="2"></span>
+            <span th:case="3" th:text="3"></span>
+        </span>
+        <hr/>
+        <h1>循环</h1>
+        <!--
+            th:each="e,eState : ${emps}"
+            其中e为循环的每一项，eState是下标属性(可省略)，eState属性包括：
+            index：列表状态的序号，从0开始；
+            count：列表状态的序号，从1开始；
+            size：列表状态，列表数据条数；
+            current：列表状态，当前数据对象
+            even：列表状态，是否为奇数，boolean类型
+            odd：列表状态，是否为偶数，boolean类型
+            first：列表状态，是否为第一条，boolean类型
+            last：列表状态，是否为最后一条，boolean类型
+        -->
+        <table border="1px" style="border-collapse:collapse">
+            <tr>
+                <th>name</th>
+                <th>age</th>
+                <th>sex</th>
+                <th>index</th>
+                <th>count</th>
+                <th>size</th>
+                <th>current</th>
+                <th>even</th>
+                <th>odd</th>
+                <th>first</th>
+                <th>last</th>
+            </tr>
+            <tr th:each="a , lineStatus: ${list}">
+                <td th:text="${a.getName()}"></td>
+                <td th:text="${a.getAge()}"></td>
+                <td th:text="${a.getSex()}"></td>
+
+                <td th:text="${lineStatus.index}"></td>
+                <td th:text="${lineStatus.count}"></td>
+                <td th:text="${lineStatus.size}"></td>
+                <td th:text="${lineStatus.current}"></td>
+                <td th:text="${lineStatus.even}"></td>
+                <td th:text="${lineStatus.odd}"></td>
+                <td th:text="${lineStatus.first}"></td>
+                <td th:text="${lineStatus.last}"></td>
+            </tr>
+        </table>
+        <hr/>
+
+
+
+        <div>
+            --end--
+        </div>
+    </body>
+</html>

@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
@@ -45,5 +47,14 @@ public class PostTest {
             Date lastReplyTime = p.getLastReplyTime();
             System.out.println(lastReplyTime);
         }
+    }
+
+    @Test
+    public void queryByPage() {
+        postDao.findAll(new PageRequest(0,2));
+        postDao.findAll(new PageRequest(1,2));
+        postDao.findAll(new PageRequest(2,2));
+
+        System.out.println(1);
     }
 }
