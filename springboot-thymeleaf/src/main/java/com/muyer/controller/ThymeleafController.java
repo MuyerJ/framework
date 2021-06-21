@@ -1,7 +1,7 @@
 package com.muyer.controller;
 
 import com.google.common.collect.Lists;
-import com.muyer.model.People;
+import com.muyer.entity.People;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +52,17 @@ public class ThymeleafController {
     @RequestMapping("/demo")
     public String demo(Model model) {
         return "demo";
+    }
+
+
+    @RequestMapping("/demo2")
+    public String demo2(Model model) {
+        return "demo2";
+    }
+
+    @RequestMapping("/table")
+    public String table(Model model) {
+        return "table";
     }
 
     @RequestMapping("/layui")

@@ -1,4 +1,4 @@
-package com.muyer.model;
+package com.muyer.entity;
 
 /**
  * Description: 
