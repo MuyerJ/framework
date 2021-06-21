@@ -36,4 +36,26 @@ public class ThymeleafController {
 
         return "sample";
     }
+
+
+    @RequestMapping("/layout")
+    public String layui(Model model) {
+        return "layout";
+    }
+
+    @RequestMapping("/color")
+    public String color(Model model) {
+        return "color";
+    }
+
+
+    @RequestMapping("/demo")
+    public String demo(Model model) {
+        return "demo";
+    }
+
+    @RequestMapping("/layui")
+    public String layui2(Model model) {
+        return "layui";
+    }
 }

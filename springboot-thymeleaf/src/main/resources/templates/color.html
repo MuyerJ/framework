@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link rel="stylesheet" th:href="@{/lib/layui-v2.6.8/layui/css/layui.css}" media="all">
+        <link rel="stylesheet" th:href="@{/css/main.css}" media="all">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="renderer" content="webkit">
+        <title>layui 颜色</title>
+    </head>
+    <body>
+        <div class="layui-container">
+            <div class="layui-row">
+                <div class="layui-col-md1 layui-bg-black"></div>
+                <div class="layui-col-md1 layui-bg-blue"></div>
+                <div class="layui-col-md1 layui-bg-green"></div>
+                <div class="layui-col-md1 layui-bg-gray"></div>
+            </div>
+        </div>
+        <script th:src="@{/lib/layui-v2.6.8/layui/layui.js}" charset="utf-8"></script>
+        <script>
+            layui.use(['layer', 'form'], function () {
+                var layer = layui.layer, form = layui.form;
+                layer.msg('Hello World');
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,6 @@
+@charset "UTF-8";
+/* 通用样式 */
+. table-wrap{
+    overflow-y: auto;
+    margin: 5px 0;
+}
