@@ -65,6 +65,16 @@ public class ThymeleafController {
         return "table";
     }
 
+    @RequestMapping("/login")
+    public String login(Model model) {
+        return "login";
+    }
+
+    @RequestMapping("/template")
+    public String template(Model model) {
+        return "template";
+    }
+
     @RequestMapping("/layui")
     public String layui2(Model model) {
         return "layui";
