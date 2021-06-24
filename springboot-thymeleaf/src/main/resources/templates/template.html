@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/Timo"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
     <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
-        <title>template-demo</title>
+        <style>
+            .dict-value {
+                max-width: 300px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        </style>
     </head>
     <body class="timo-layout-page">
-
         <div class="layui-card">
             <div class="layui-card-header timo-card-header">
                 <span><i class="fa fa-bars"></i> 字典管理</span>
@@ -17,21 +24,21 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">状态</label>
                             <div class="layui-input-block timo-search-status">
-                                <select class="timo-search-select" name="status"></select>
+                                <select class="timo-search-select" name="status" mo:dict="SEARCH_STATUS"
+                                        mo-selected="${param.status}"></select>
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">字典标识</label>
                             <div class="layui-input-block">
-                                <input type="text" name="name" th:value="${param.name}" placeholder="请输入字典标识"
-                                       autocomplete="off"
+                                <input type="text" name="name"   placeholder="请输入字典标识" autocomplete="off"
                                        class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">字典标题</label>
                             <div class="layui-input-block">
-                                <input type="text" name="title" th:value="${param.title}" placeholder="请输入字典标题"
+                                <input type="text" name="title"  placeholder="请输入字典标题"
                                        autocomplete="off" class="layui-input">
                             </div>
                         </div>
@@ -43,10 +50,10 @@
                     </div>
                     <div class="pull-right screen-btn-group">
                         <button class="layui-btn open-popup" data-title="添加字典" th:attr="data-url=@{/system/dict/add}"
-                                data-size="615,558">
+                                shiro:hasPermission="system:dict:add" data-size="615,558">
                             <i class="fa fa-plus"></i> 添加
                         </button>
-                        <div class="btn-group">
+                        <div class="btn-group" shiro:hasPermission="system:dict:status">
                             <button class="layui-btn">操作<span class="caret"></span></button>
                             <dl class="layui-nav-child layui-anim layui-anim-upbit">
                                 <dd><a class="ajax-status" th:href="@{/system/dict/status/ok}">启用</a></dd>
@@ -74,24 +81,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="item:${list}">
-                            <td><label class="timo-checkbox"><input type="checkbox" th:value="${item.id}">
+                        <tr >
+                            <td><label class="timo-checkbox"><input type="checkbox">
                                 <i class="layui-icon layui-icon-ok"></i></label></td>
-                            <td th:text="${item.name}">字典键名</td>
-                            <td th:text="${item.title}">字典标题</td>
-                            <td th:text="${#dicts.keyValue('DICT_TYPE', item.type)}">字典类型</td>
-                            <td th:text="${item.value}" class="dict-value">字典键值</td>
-                            <td th:text="${#dates.format(item.createDate, 'yyyy-MM-dd HH:mm:ss')}">创建时间</td>
-                            <td th:text="${#dates.format(item.updateDate, 'yyyy-MM-dd HH:mm:ss')}">更新时间</td>
+                            <td >字典键名</td>
+                            <td >字典标题</td>
+                            <td >字典类型</td>
+                            <td  class="dict-value">字典键值</td>
+                            <td >创建时间</td>
+                            <td >更新时间</td>
                             <td>
-                                <!--<a class="open-popup" data-title="编辑字典" th:attr="data-url=@{'/system/dict/edit/'+${item.id}}"-->
-                                <!--shiro:hasPermission="system:dict:edit"-->
-                                <!--data-size="615,558" href="#">编辑</a>-->
-                                <!--<a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/system/dict/detail/'+${item.id}}"-->
-                                <!--shiro:hasPermission="system:dict:detail"-->
-                                <!--data-size="800,600" href="#">详细</a>-->
-                                <!--<a class="ajax-get" data-msg="您是否确认删除" th:href="@{/system/dict/status/delete(ids=${item.id})}"-->
-                                <!--shiro:hasPermission="system:dict:status">删除</a>-->
+                                <a class="open-popup" data-title="编辑字典"
+                                   data-size="615,558" href="#">编辑</a>
+                                <a class="open-popup" data-title="详细信息"
+                                   data-size="800,600" href="#">详细</a>
+                                <a class="ajax-get" data-msg="您是否确认删除" >删除</a>
                             </td>
                         </tr>
                         </tbody>
@@ -100,13 +104,20 @@
                 <!--<div th:replace="/common/fragment :: page"></div>-->
             </div>
         </div>
-
         <script th:replace="/common/template :: script"></script>
-        <script type="text/javascript" th:inline="none">
-            layui.use('layer', function () {
-                var layer = layui.layer
-                layer.alert('内容')
-            })
+        <script>
+            layui.use(['element'], function () {
+                var $ = layui.jquery;
+                var dv = $(".dict-value");
+                $(window).on("resize", function () {
+                    var width = $("body").width();
+                    if (width > 1200) {
+                        dv.css("max-width", width * 0.32);
+                    } else {
+                        dv.css("max-width", width * 0.20);
+                    }
+                }).resize();
+            });
         </script>
     </body>
 </html>
