@@ -104,8 +104,12 @@
                 <!--<div th:replace="/common/fragment :: page"></div>-->
             </div>
             <hr>
-            <Fw:select id="sex" name="sex" colVal="dict_value" colText="dict_label" tableName="dict_demo"
+            <Fw:select id="sex" name="sex" colVal="dict_value"
+                       colText="dict_label" tableName="dict_demo"
+                       fwValue="testValue"
                        options=" where dict_type = 'sex'" value="1"/>
+
+            <div th:text="${#stringUtil.connect('yj')}"></div>
         </div>
         <script th:replace="/common/template :: script"></script>
         <script>

@@ -1,4 +1,4 @@
-package com.muyer.thymeleaf;
+package com.muyer.thymeleaf.tag;
 
 import org.springframework.stereotype.Component;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
@@ -35,7 +35,7 @@ public class MyTag extends AbstractProcessorDialect {
     @Override
     public Set<IProcessor> getProcessors(String s) {
         final Set<IProcessor> processor=new HashSet<>();
-        //<Fw:select>标签
+        //<Fw:select>标签   s == PREFIXX
         processor.add(new MyTagSelect(PREFIX));
         return processor;
     }

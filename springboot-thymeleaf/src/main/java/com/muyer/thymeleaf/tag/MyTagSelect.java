@@ -1,4 +1,4 @@
-package com.muyer.thymeleaf;
+package com.muyer.thymeleaf.tag;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -63,6 +63,10 @@ public class MyTagSelect extends AbstractElementTagProcessor {
      *
      * @param iTemplateContext            模板页上下文
      * @param iProcessableElementTag      待处理标签
+     *      templateName:template
+     *      templateNameMode:HTML
+     *      elementCompleteName:FW:select
+     *      attributes:标签的属性值map
      * @param iElementTagStructureHandler 元素标签结构处理器
      */
     @Override
@@ -81,6 +85,7 @@ public class MyTagSelect extends AbstractElementTagProcessor {
         String colVal = iProcessableElementTag.getAttributeValue("colVal");
         //option中文本的值在数据表中的对应字段
         String colText = iProcessableElementTag.getAttributeValue("colText");
+        String fwValue = iProcessableElementTag.getAttributeValue("fwValue");
         //默认值
         String value = iProcessableElementTag.getAttributeValue("value");
         value = StringUtils.isBlank(value) ? "" : value;
