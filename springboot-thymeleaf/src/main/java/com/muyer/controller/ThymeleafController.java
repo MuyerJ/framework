@@ -99,21 +99,21 @@ public class ThymeleafController {
         Map<Long, Menu> keyMenu = allMenus.stream().collect(Collectors.toMap(Menu::getId, Function.identity()));
         //封装结果
         Map<Long, Menu> treeMenu = new HashMap<>(16);
-//        keyMenu.forEach((id, menu) -> {
-//            //不是按钮
-//            if(!menu.getType().equals(3)){
-//                //当前菜单项有父亲节点
-//                if(keyMenu.get(menu.getPid()) != null){
-//                    //将当前节点放在父亲节点的 childrenList里
-//                    keyMenu.get(menu.getPid()).getChildren().put(Long.valueOf(menu.getSort()), menu);
-//                }else{
-//                    //当前菜单项是 目录，把当前菜单项放入目录结果里
-//                    if(menu.getType().equals(1)){
-//                        treeMenu.put(Long.valueOf(menu.getSort()), menu);
-//                    }
-//                }
-//            }
-//        });
+        keyMenu.forEach((id, menu) -> {
+            //不是按钮
+            if(!menu.getType().equals(3)){
+                //当前菜单项有父亲节点
+                if(keyMenu.get(menu.getPid()) != null){
+                    //将当前节点放在父亲节点的 childrenList里
+                    keyMenu.get(menu.getPid()).getChildren().put(Long.valueOf(menu.getSort()), menu);
+                }else{
+                    //当前菜单项是 目录，把当前菜单项放入目录结果里
+                    if(menu.getType().equals(1)){
+                        treeMenu.put(Long.valueOf(menu.getSort()), menu);
+                    }
+                }
+            }
+        });
         model.addAttribute("treeMenu", keyMenu);
         return "main";
     }
