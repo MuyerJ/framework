@@ -75,11 +75,6 @@ public class ThymeleafController {
         return "table";
     }
 
-    @RequestMapping("/login")
-    public String login(Model model) {
-        return "login";
-    }
-
     @RequestMapping("/template")
     public String template(Model model) {
         return "template";
