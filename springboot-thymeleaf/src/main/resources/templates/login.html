@@ -59,6 +59,8 @@
                     console.log(this.form)
                     var url = form.attr("action");
                     console.log(this.url)
+                    //https://www.cnblogs.com/goloving/p/7417577.html
+                    //jQuery序列化表单数据 serialize()、serializeArray()及使用
                     var serializeArray = form.serializeArray();
                     $.post(url, serializeArray, function (result) {
                         if (result.code !== 200) {
