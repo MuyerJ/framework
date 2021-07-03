@@ -1,6 +1,7 @@
 package com.muyer.controller;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.muyer.entity.Menu;
 import com.muyer.entity.People;
 import com.muyer.repository.MenuDao;
@@ -85,31 +86,23 @@ public class ThymeleafController {
         return "layui";
     }
 
-    @RequestMapping("/main")
+    @RequestMapping("/")
     public String main(Model model) {
-        List<Menu> allMenus = menuDao.findAll();
-        //排除已经删除的数据
-        allMenus = allMenus.stream().filter(menu -> 1 == menu.getStatus()).collect(Collectors.toList());
-        //转换为map
-        Map<Long, Menu> keyMenu = allMenus.stream().collect(Collectors.toMap(Menu::getId, Function.identity()));
         //封装结果
         Map<Long, Menu> treeMenu = new HashMap<>(16);
-        keyMenu.forEach((id, menu) -> {
-            //不是按钮
-            if(!menu.getType().equals(3)){
-                //当前菜单项有父亲节点
-                if(keyMenu.get(menu.getPid()) != null){
-                    //将当前节点放在父亲节点的 childrenList里
-                    keyMenu.get(menu.getPid()).getChildren().put(Long.valueOf(menu.getSort()), menu);
-                }else{
-                    //当前菜单项是 目录，把当前菜单项放入目录结果里
-                    if(menu.getType().equals(1)){
-                        treeMenu.put(Long.valueOf(menu.getSort()), menu);
-                    }
-                }
-            }
-        });
-        model.addAttribute("treeMenu", keyMenu);
+        Menu menu = new Menu();
+        menu.setId(1L);
+        menu.setUrl("#");
+        menu.setTitle("系统管理");
+        Menu menu2 = new Menu();
+        menu2.setId(2L);
+        menu2.setUrl("/template");
+        menu2.setTitle("菜单管理");
+        HashMap<Long, Menu> map = Maps.newHashMap();
+        map.put(menu2.getId(), menu2);
+        menu.setChildren(map);
+        treeMenu.put(menu.getId(), menu);
+        model.addAttribute("treeMenu", treeMenu);
         return "main";
     }
 }

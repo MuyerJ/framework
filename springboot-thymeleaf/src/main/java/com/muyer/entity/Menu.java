@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Data
 @Entity
-@Table(name = "sys_menu")
+@Table(name = "menu")
 public class Menu implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
