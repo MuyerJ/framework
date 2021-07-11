@@ -32,9 +32,14 @@ springboot内置定时任务框架
 
 ```
 
-### XXL-JOB集成
+### 二、XXL-JOB集成
 #### 1、源码下载
-https://www.xuxueli.com/xxl-job/
+
+1) 下载地址 https://www.xuxueli.com/xxl-job/
+
+2) xxl-job-admin是管理后台
+
+3) xxl-job-core是我们自己项目需要引入的包
 
 #### 2、初始化admin数据库
 
@@ -55,8 +60,42 @@ https://www.xuxueli.com/xxl-job/
 
 #### 3、修改admin配置文件
 
-#### 4、访问admin首页，执行器列表、任务列表
-http://127.0.0.1:8081/xxl-job-admin
+数据库连接和账号密码肯定是要修改的
 
-#### 5、执行器依耐core，修改配置文件
-xxl.job.admin.addresses=http://127.0.0.1:8081/xxl-job-admin
+#### 4、访问admin首页，执行器列表、任务列表
+1) 首页地址 http://127.0.0.1:8081/xxl-job-admin
+
+2) 执行器列表 是我们自己的job执行器
+
+3) 任务列表 是我们创建执行job执行器的策略方式列表
+
+#### 5、执行器项目 依赖xxl-job-core，修改配置文件
+
+1) 依赖xxl-job-core 
+```
+<!-- xxl-job-core -->
+<dependency>
+    <groupId>com.xuxueli</groupId>
+    <artifactId>xxl-job-core</artifactId>
+    <version>2.3.0</version>
+</dependency>
+```
+
+2) 修改配置文件
+```
+@Bean
+public XxlJobSpringExecutor xxlJobExecutor() {
+    logger.info(">>>>>>>>>>> xxl-job config init.");
+    XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
+    xxlJobSpringExecutor.setAdminAddresses("http://127.0.0.1:8080/xxl-job-admin");
+    xxlJobSpringExecutor.setAppname("myJob");
+    xxlJobSpringExecutor.setAddress("");
+    xxlJobSpringExecutor.setIp("127.0.0.1");
+    xxlJobSpringExecutor.setPort(9999);
+    xxlJobSpringExecutor.setAccessToken("");
+    xxlJobSpringExecutor.setLogPath("/data/applogs/xxl-job/jobhandler");
+    xxlJobSpringExecutor.setLogRetentionDays(30);
+    return xxlJobSpringExecutor;
+}
+
+```
