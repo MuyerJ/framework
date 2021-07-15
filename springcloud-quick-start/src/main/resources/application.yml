@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: quick
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.110.129.240:8848
+#        namespace: acf50309-093a-42c0-bd16-9961714d285b
+
+feign:
+  hystrix:
+    enabled: true
