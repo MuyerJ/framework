@@ -25,7 +25,7 @@ public class IODemo {
     static Pattern p3 = Pattern.compile("(?<=\\|)\\d+?(?=\\|)");
 
     static {
-        File file = new File("F:" + File.separator + "sql.txt");
+        File file = new File("F:" + File.separator + "updateSql.txt");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -44,7 +44,7 @@ public class IODemo {
     }
 
     public static void main(String[] args) throws Exception {
-        getGrabOrderInfo();
+        createUpdateSqlFile();
     }
 
     /**
@@ -148,7 +148,7 @@ public class IODemo {
             Matcher matcher = pattern.matcher(lineStr);
             String value;
             while (matcher.find()) {
-                value = matcher.group().replace(", ","").trim();
+                value = matcher.group().replace(", ", "").trim();
                 resultStr = resultStr + value.split("=")[1] + "\r\n";
                 i++;
             }
@@ -160,6 +160,32 @@ public class IODemo {
 
         //写数据
         File file = new File("F:" + File.separator + "out3.txt");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        //加true是追加，不加true就是覆盖了
+        Writer writer = new FileWriter(file, true);
+        writer.write(resultStr);
+        writer.close();
+    }
+
+    public static void createUpdateSqlFile() throws Exception {
+        //读数据
+        Reader reader = new FileReader("F:" + File.separator + "sql.txt");
+        BufferedReader bufferedReader = new BufferedReader(reader);
+        String lineStr = "";
+        String resultStr = "";
+        while ((lineStr = bufferedReader.readLine()) != null) {
+            String[] values = lineStr.split("VALUES")[1]
+                    .replace("(", "")
+                    .replace(")", "").trim().split(",");
+            resultStr = resultStr + "update `dict_area` set lng = " + values[values.length - 2].trim()
+                    + " , lat =  " + values[values.length - 1].trim() + " where area_id = " + values[0].trim() + " ; " + "\r\n";
+        }
+        bufferedReader.close();
+        reader.close();
+        //写数据
+        File file = new File("F:" + File.separator + "updateSql.txt");
         if (!file.exists()) {
             file.createNewFile();
         }
