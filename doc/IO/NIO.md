@@ -104,7 +104,7 @@ Buffer有四个指标:
 (4) capacity 数组最大容量
 
 Buffer四个操作以及指标的变化
-(1) 初始化 mark=-1,,position=0,limit=capacity=buffer.length()
+(1) 初始化 mark=-1,position=0,limit=capacity=buffer.length()
 (2) put() position++,其他的不变
 (3) flit() limit=position,positon=0
 (4) rewind() position=0  可以读到非写区域，可以实现重复读
