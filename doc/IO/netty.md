@@ -1,3 +1,21 @@
+优秀文章
+```
+https://blog.csdn.net/ningdunquan/article/details/80342970
+https://bestqiang.blog.csdn.net/article/details/90648219
+    两个模型：线程模型(单线程、单线程池、双线程池)和异步模型
+    核心API:
+        ChannelHandler及其实现类#channelActiver/#channelRead/#channelReadComplete/#exceptionCaught
+        ChannelPipeline#addFirst/#addLast
+        ChannelHandlerContext
+        ChannelOption
+        ChannelFuture#channel/#sync
+        EventLoopGroup和NioEventLoopGroup
+        ServerBootStrap和BootStrap
+        
+聊天室：https://bestqiang.blog.csdn.net/article/details/90671297
+        
+```
+
 ### 一、Netty是什么?
 ```
 异步事件驱动框架，用于快速开发高性能服务端和客户端
@@ -9,7 +27,6 @@
 
 ### 二、Netty 核心组件?
 ```
-https://blog.csdn.net/ningdunquan/article/details/80342970
 
 BootStrap:
     netty服务端和客户端的启动器(ServerBootStrap和BootStrap)
