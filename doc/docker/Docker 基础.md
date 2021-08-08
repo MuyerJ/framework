@@ -222,6 +222,10 @@ exit
 ```
 
 #### 4.其他命令
+- 查看docker状态(占用内存等信息)
+```
+docker stats
+```
 
 - 后台启动容器
 ```
@@ -263,8 +267,144 @@ docker cp 容器id:容器内的路径 目的主机路径
 ![](../img/docker_command.png)
 
 
-### Docker 镜像！
+### Docker 镜像
+#### 1.镜像是什么？
+```
+所有应用，直接打包包括库、运行时环境、配置文件等，打包成docker镜像，就可以直接跑起来
+```
+#### 2.镜像加载原理
+- UnionFS(联合文件系统)
+- 镜像加载原理
+#### 3.分层的理解
+
+现象：下载的时候可以看出是一层层的在下载
+
+好处和特点?
+```
+
+特点：
+Docker镜像都是只读的，当容器启动时，一个新的可写层被加载到镜像顶部
+这一层通常是我们说的容器层，容器之下都叫镜像层
+```
+
+可以通过docker image inspect查看分层
+```
+"RootFS":{}
+```
+
+#### 4.提交自己的commit
+```
+commit镜像
+docker commit 提交容器成为一个新的副本
+
+命令和git原理类似
+docker commit -m="提交的描述信息" -a="作者" 目标镜像名字:[TAG]
+
+docker commit -m="add webapp tomcat" -a="muyer" 3a1c9e8dc146 tomcat01:1.0
+
+```
+
 ### Docker 容器数据卷
+
+#### 1.什么是数据卷
+
+数据都在容器中，如果删除了容器，数据都将丢失，所以就出现了数据卷的概念。
+
+简单来讲就是容器的数据同步技术，Docker容器的数据可以同步到本地
+
+![](../img/docker_v.jpg)
+
+
+#### 2.使用数据券
+```
+docker run -v 主机目录:容器目录
+
+docker run -it --name tomcat01 -v /test:/webapps/ tomcat:9.0
+
+"Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/test",
+                "Destination": "/webapps",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ]
+```
+
+#### 3.实战安装mysql,使用数据卷
+#### 4.如何确定是具名、匿名、指定路径挂载？
+- 具名挂载
+```
+docker run -it --name tomcat02 -v tomcat02:/webapps tomcat:9.0
+
+"Mounts": [
+            {
+                "Type": "volume",
+                "Name": "tomcat02",
+                "Source": "/var/lib/docker/volumes/tomcat02/_data",
+                "Destination": "/webapps",
+                "Driver": "local",
+                "Mode": "z",
+                "RW": true,
+                "Propagation": ""
+            }
+        ]
+        
+查看所有volume情况(docker volume ls)   
+DRIVER    VOLUME NAME
+local     tomcat02
+
+
+```
+- 匿名挂载
+```
+-v 容器内路径
+docker run -it --name tomcat03 -v /webapps tomcat:9.0
+
+"Mounts": [
+            {
+                "Type": "volume",
+                "Name": "9b4a7bcc28c1d7ff6cfd5438e97750ef1e6ecf20b1b4baade0767925e11c5850",
+                "Source": "/var/lib/docker/volumes/9b4a7bcc28c1d7ff6cfd5438e97750ef1e6ecf20b1b4baade0767925e11c5850/_data",
+                "Destination": "/webapps",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            }
+        ]
+
+
+查看所有volume情况(docker volume ls)
+DRIVER    VOLUME NAME
+local     9b4a7bcc28c1d7ff6cfd5438e97750ef1e6ecf20b1b4baade0767925e11c5850
+ 
+```
+
+- 指定路径挂载
+```
+docker run -it --name tomcat01 -v /test:/webapps/ tomcat:9.0
+```
+
+- 总结
+```
+
+(1)判定？
+- v 容器内路径 ==> 匿名挂载
+- v 卷名:容器内路径 ==> 具名挂载
+- v /宿主路径:容器内路径 ==> 指定路径挂载
+
+(2)所有docker的数据券没有指定路径,都会默认在主机的地址
+/var/lib/docker/volumes/xxxx/_data
+
+(3)-v 容器内路径:ro rw 改变读写权限
+ro readnoly; rw readwrite
+docker run -it --name tomcat02 -v tomcat02:/webapps:ro tomcat:9.0
+docker run -it --name tomcat02 -v tomcat02:/webapps:rw tomcat:9.0
+一旦加了权限,容器就会对挂载出来的数据有限制了
+```
 ### DockerFile
 ### Docker 网络原理
 ### IDEA 整合 Docker
