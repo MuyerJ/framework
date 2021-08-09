@@ -406,8 +406,310 @@ docker run -it --name tomcat02 -v tomcat02:/webapps:rw tomcat:9.0
 一旦加了权限,容器就会对挂载出来的数据有限制了
 ```
 ### DockerFile
+DockerFile就是用来构建docker都镜像构建文件！命令脚本！
+#### 1.DockerFile 介绍
+#### 2.DockerFile 构建过程
+#### 3.DockerFile 指令
+#### 4.实战构建自己的centos、tomcat
+
+
 ### Docker 网络原理
+#### 1.理解Docker0 
+```
+# ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 00:16:3e:0b:9e:91 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.15.70/18 brd 172.17.63.255 scope global dynamic eth0
+       valid_lft 305622582sec preferred_lft 305622582sec
+3: docker0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+    link/ether 02:42:11:ac:96:38 brd ff:ff:ff:ff:ff:ff
+    inet 172.18.0.1/16 scope global docker0
+       valid_lft forever preferred_lft forever
+45: veth7e95684@if44: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master docker0 state UP group default 
+    link/ether b2:0f:16:4d:aa:46 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+
+
+lo : 本机回环地址
+eth0 : 阿里云内网地址
+docker0 : docker地址
+
+问题：docker如何处理容器网络问题？
+
+# docker exec -it tomcat03 ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+44: eth0@if45: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+    link/ether 02:42:ac:12:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.18.0.2/16 brd 172.18.255.255 scope global eth0 valid_lft forever preferred_lft forever
+
+问题：Linux能否ping通docker容器内部？
+# ping 172.18.0.2
+PING 172.18.0.2 (172.18.0.2) 56(84) bytes of data.
+64 bytes from 172.18.0.2: icmp_seq=1 ttl=64 time=0.101 ms
+64 bytes from 172.18.0.2: icmp_seq=2 ttl=64 time=0.057 ms
+64 bytes from 172.18.0.2: icmp_seq=3 ttl=64 time=0.057 ms
+64 bytes from 172.18.0.2: icmp_seq=4 ttl=64 time=0.058 ms
+64 bytes from 172.18.0.2: icmp_seq=5 ttl=64 time=0.057 ms
+64 bytes from 172.18.0.2: icmp_seq=6 ttl=64 time=0.061 ms
+64 bytes from 172.18.0.2: icmp_seq=7 ttl=64 time=0.054 ms
+64 bytes from 172.18.0.2: icmp_seq=8 ttl=64 time=0.057 ms
+--- 172.18.0.2 ping statistics ---
+8 packets transmitted, 8 received, 0% packet loss, time 6999ms
+rtt min/avg/max/mdev = 0.054/0.062/0.101/0.017 ms
+
+
+```
+
+#### 2.原理
+```
+我们只要安装docker,就会在网卡生成一个docker0桥接模式,使用的技术是evth-pair技术
+每启动一个容器,docker就会给容器分配一个ip
+
+docker0相当于路由器的作用
+
+我们发现这个容器带来的网卡 都是一对一对出现的
+evth-pair 就是一对虚拟设备接口,他们都是成对出现的,一段连着协议,一段彼此相连
+正因为有这个特性,evth-pair充当一个桥梁,连接各种虚拟设备
+OpenStack、Docker容器之间的连接、OVS的连接，都是使用evth-pair技术
+
+docker所有网络接口都是虚拟的，虚拟的转发效率高
+```
+
+![](../img/docker_桥接.jpg)
+
+
+#### 3.两个容器互相ping
+```
+docker run -it tomcat01 ping 172.18.0.2
+```
+
+#### 4.--link
+```
+思考一个问题:
+我们编写一个微服务,database url = ip , 项目不重启,数据库ip变了,我们希望可以通过名字来进行容器访问？
+```
+![](../img/docker_link.jpg)
+
+```
+本质探究：
+    --link 就是在我们/etc/hosts配置中增加了一个ip映射
+
+不推荐使用这个
+
+一般都使用自定义网络,原因是docker0不支持容器名字连接访问
+```
+
+#### 5.自定义网络
+- 查看网络
+```
+# docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+abec71cfe0c3   bridge    bridge    local
+307b174667f3   host      host      local
+```
+
+- 网络模式
+```
+bridge : 桥接模式 默认,自定义的话也使用这个
+none : 不配置网络
+host : 和宿主机共享网络
+container : 容器网络互通
+```
+
+- 测试
+```
+我们启动的命令默认有 --net bridge ,这个就是我们的docker0
+docker run -d -P --name tomcat01 tomcat
+docker run -d -P --name tomcat01 --net bridge tomcat
+
+docker特点：默认,名字不能访问，--link本地配hosts可以打通
+
+
+自定义网络
+docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet
+
+#  docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+abec71cfe0c3   bridge    bridge    local
+307b174667f3   host      host      local
+6e1ea17b1f33   mynet     bridge    local
+b388df8f5850   none      null      local
+
+# docker network inspect mynet
+[
+    {
+        "Name": "mynet",
+        "Id": "6e1ea17b1f33a3b22979683dbeba7f1f0ca5a7a6931bf8fce10b3d84bbdd2fc3",
+        "Created": "2021-08-08T17:40:23.888688175+08:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "192.168.0.0/16",
+                    "Gateway": "192.168.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+# docker run -d -P --name tomcat01-mynet --net mynet tomcat:9.0
+# docker run -d -P --name tomcat02-mynet --net mynet tomcat:9.0
+
+
+# docker network inspect mynet
+[
+    {
+        "Name": "mynet",
+        "Id": "6e1ea17b1f33a3b22979683dbeba7f1f0ca5a7a6931bf8fce10b3d84bbdd2fc3",
+        "Created": "2021-08-08T17:40:23.888688175+08:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "192.168.0.0/16",
+                    "Gateway": "192.168.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "086c76f9c232cc68c7b5d7b1ff9f44ce6e9c1f519dd99baa7d40633700c85547": {
+                "Name": "tomcat01-mynet",
+                "EndpointID": "d864b35c94cc810176f5b84bc60b95845db425bf6f8f22b7743bc934b8559806",
+                "MacAddress": "02:42:c0:a8:00:02",
+                "IPv4Address": "192.168.0.2/16",
+                "IPv6Address": ""
+            },
+            "888cfe9d040986c3a6b3cacb152f3e83015d963e374e2ab59bcc9ad6f22200a7": {
+                "Name": "tomcat02-mynet",
+                "EndpointID": "046f40dcfeb70c8bcc6c971a16435c8103bd702ed4a1a99bdec1e5f4c8e5967d",
+                "MacAddress": "02:42:c0:a8:00:03",
+                "IPv4Address": "192.168.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+ping ip
+
+# docker exec -it tomcat01-mynet ping 192.168.0.3
+PING 192.168.0.3 (192.168.0.3) 56(84) bytes of data.
+64 bytes from 192.168.0.3: icmp_seq=1 ttl=64 time=0.100 ms
+64 bytes from 192.168.0.3: icmp_seq=2 ttl=64 time=0.072 ms
+64 bytes from 192.168.0.3: icmp_seq=3 ttl=64 time=0.091 ms
+^C
+--- 192.168.0.3 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.072/0.087/0.100/0.015 ms
+
+
+ping 容器名字
+
+# docker exec -it tomcat01-mynet ping tomcat02-mynet
+PING tomcat02-mynet (192.168.0.3) 56(84) bytes of data.
+64 bytes from tomcat02-mynet.mynet (192.168.0.3): icmp_seq=1 ttl=64 time=0.054 ms
+64 bytes from tomcat02-mynet.mynet (192.168.0.3): icmp_seq=2 ttl=64 time=0.073 ms
+64 bytes from tomcat02-mynet.mynet (192.168.0.3): icmp_seq=3 ttl=64 time=0.068 ms
+^C
+--- tomcat02-mynet ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2ms
+rtt min/avg/max/mdev = 0.054/0.065/0.073/0.008 ms
+
+
+```
+
+
+#### 6.网络连通
+
+```
+一个容器两个ip
+docker network connect [options] NETWORK 容器 
+```
+
 ### IDEA 整合 Docker
 ### Docker Compose
+- 简介
+```
+轻松高效的管理多个容器
+yaml配置服务
+作用：批量容器编排
+
+理解：
+Compose是官方开源项目。需要安装
+DockerFile让程序在任何地方运行
+```
+
+- 初体验
+- yaml
+```
+三层
+
+version: ""
+services:  #服务
+    服务1： 
+        #服务配置
+        images
+        build
+        network
+        ...   
+    服务2：
+其他配置
+    network网络配置
+    volume券
+    configs全局规则
+```
+
+- 实战
+
 ### Docker Swarm
+集群方式部署
+
+- 工作模式
+- 搭建集群
+- Raft协议
+- 弹性、扩缩容
+```
+docker run  --> low...
+docker-compose up --> 单机
+swarm、k8s     -->  集群
+```
+```
+双主双从：假设一个节点挂了，其他节点是否可用
+Raft协议：保证大多数节点存活才可以用
+```
+
 ### CI\CD Jenkins
