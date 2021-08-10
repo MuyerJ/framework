@@ -143,6 +143,10 @@ sudo systemctl start docker
 6.查看版本,看是否启动成功
 
 docker version
+
+
+运行Hello-Wold
+sudo docker run hello-world
   
 ```
 
