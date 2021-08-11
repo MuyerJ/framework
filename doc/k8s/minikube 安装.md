@@ -208,11 +208,17 @@ sudo tee /etc/docker/daemon.json <<-'EOF'
 EOF
 sudo systemctl daemon-reload
 sudo systemctl restart docker
-
+yum install etcd -y
+systemctl start etcd
+systemctl start docker
+systemctl start kube
+systemctl start kube-api
 
 [yejiang@centos1 bin]$ kubectl version
 Client Version: version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.0", GitCommit:"cb303e613a121a29364f75cc67d3d580833a7479", GitTreeState:"clean", BuildDate:"2021-04-08T16:31:21Z", GoVersion:"go1.16.1", Compiler:"gc", Platform:"linux/amd64"}
 Server Version: version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.2", GitCommit:"092fbfbf53427de67cac1e9fa54aaa09a28371d7", GitTreeState:"clean", BuildDate:"2021-06-16T12:53:14Z", GoVersion:"go1.16.5", Compiler:"gc", Platform:"linux/amd64"}
+
+
 [yejiang@centos1 bin]$  docker version
 Client: Docker Engine - Community
  Version:           20.10.8
@@ -243,9 +249,23 @@ Server: Docker Engine - Community
   Version:          0.19.0
   GitCommit:        de40ad0
 
+
+[root@centos1 bin]# etcd
+2021-08-11 16:15:49.346841 I | etcdmain: etcd Version: 3.3.11
+2021-08-11 16:15:49.347384 I | etcdmain: Git SHA: 2cf9e51
+2021-08-11 16:15:49.347390 I | etcdmain: Go Version: go1.10.3
+2021-08-11 16:15:49.347397 I | etcdmain: Go OS/Arch: linux/amd64
+2021-08-11 16:15:49.347403 I | etcdmain: setting maximum number of CPUs to 2, total number of available CPUs is 2
+2021-08-11 16:15:49.347415 W | etcdmain: no data-dir provided, using default data-dir ./default.etcd
+2021-08-11 16:15:49.351080 I | embed: listening for peers on http://localhost:2380
+
+
+[root@centos1 bin]# systemctl start kube
+Failed to start kube.service: Unit not found.
+
+
 -----
 
 
-
-
+  
 
