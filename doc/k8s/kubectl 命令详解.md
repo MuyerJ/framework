@@ -1,3 +1,12 @@
+### 删除命令
+```
+kubectl get pods
+kubectl delete pod <podname> -n <namespace>
+
+kubectl get deployment -n <namespace>
+kubectl delete deployment <deployment名> -n <namespace>
+```
+
 ### 命令：kubectl describe pod
 
 ```

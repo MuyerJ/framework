@@ -102,3 +102,11 @@ horizontalpodautoscaler.autoscaling/nginx-deploy autoscaled
 kubectl get hpa
 
 ```
+
+
+### 三、创建自己的应用
+```
+https://www.cnblogs.com/benjamin77/p/12446781.html
+https://www.cnblogs.com/wuchangblog/p/14034384.html
+https://www.jianshu.com/p/bf92a710f947
+```
