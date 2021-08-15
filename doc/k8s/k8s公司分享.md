@@ -264,6 +264,8 @@ kubectl get hpa
 
 
 
+
+
 ## 四、未完成实验
 
 创建两个应用
@@ -274,8 +276,183 @@ kubectl get hpa
 
 调用、实验扩容等
 
+## 五、Ingress	原理
+
+#### 1、Service
+
+https://segmentfault.com/a/1190000019376912
+
+service作为一个类似中介的角色，对内，它要能代理访问到不断变换的一组后端Pod；对外，它要能暴露自己给集群内部或外部的其他资源访问
+
+>  service的三种方式ClusterIP、NodePort与LoadBalance
+
+​	ClusterIP：集群内部才能访问
+
+​	NodePort：<NodeIp>:<NodePort>
+
+```
+## 创建svc，通过Nodeport方式暴露服务
+$ kubectl expose deployment goweb --name=gowebsvc-nodeport --port=80  --target-port=8000  --type=NodePort 
+## 查看svc，可以看到NodePort随机分配的端口为32538
+$ kubectl get svc gowebsvc-nodeport 
+NAME                TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+gowebsvc-nodeport   NodePort   10.101.166.252   <none>        80:32538/TCP   86s
+## 随便访问一个nodeip的32538端口,都可以访问到gowebsvc-nodeport服务对应的pod
+$ curl 172.16.201.108:32538/info
+Hostname: goweb-55c487ccd7-pp6t6
+$ curl 172.16.201.109:32538/info
+Hostname: goweb-55c487ccd7-5t2l2
+```
+
+​	LoadBalance
+
+​	缺点
+
+```
+ClusterIP的方式只能在集群内部访问。
+NodePort方式的话，测试环境使用还行，当有几十上百的服务在集群中运行时，NodePort的端口管理是灾难。
+LoadBalance方式受限于云平台，且通常在云平台部署ELB还需要额外的费用。
+```
+
+>  创建方式有两种：命令式 和 声明式(yaml)
+
+#### 2、Ingress
+
+https://segmentfault.com/a/1190000019908991
+
+https://blog.csdn.net/cbmljs/article/details/103183927
+
+定义规则来允许进入集群的请求被转发到集群中对应服务上，从来实现服务暴露
 
 
+
+Ingress 能把集群内 Service 配置成外网能够访问的 URL，流量负载均衡，终止SSL，提供基于域名访问的虚拟主机等等。
+
+
+
+群维度暴露服务的方式，Ingress可以理解问service的service，他通过独立的ingress对象来制定请求转发的规则，把请求路由到一个或多个service中。这样就把服务与请求规则解耦了，可以从业务维度统一考虑业务的暴露，而不用为每个service单独考虑
+
+> ingress和ingress-controller
+
+```
+ingress对象：
+指的是k8s中的一个api对象，一般用yaml配置。作用是定义请求如何转发到service的规则，可以理解为配置模板。
+ingress-controller：
+具体实现反向代理及负载均衡的程序，对ingress定义的规则进行解析，根据配置的规则来实现请求转发。
+
+ingress-controller才是负责具体转发的组件，通过各种方式将它暴露在集群入口，外部对集群的请求流量会先到ingress-controller，而ingress对象是用来告诉ingress-controller该如何转发请求，比如哪些域名哪些path要转发到哪些服务等等。
+```
+
+>  [Ingress Controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/#additional-controllers)
+
+```
+ingress-controller并不是k8s自带的组件，实际上ingress-controller只是一个统称，用户可以选择不同的ingress-controller实现
+
+k8s维护的ingress-controller只有google云的GCE与ingress-nginx两个，其他还有很多第三方维护的ingress-controller
+
+实现的机制都大同小异，只是在具体配置上有差异
+
+ingress-controller的形式都是一个pod，里面跑着daemon程序和反向代理程序。daemon负责不断监控集群的变化，根据ingress对象生成配置并应用新配置到反向代理，比如nginx-ingress就是动态生成nginx配置，动态更新upstream，并在需要的时候reload程序应用新配置
+```
+
+> Ingress
+
+```
+ingress是一个API对象，和其他对象一样，通过yaml文件来配置。ingress通过http或https暴露集群内部service，给service提供外部URL、负载均衡、SSL/TLS能力以及基于host的方向代理。
+
+ingress要依靠ingress-controller来具体实现以上功能。
+
+
+--- 
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: abc-ingress
+  annotations: 
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  tls:
+  - hosts:
+    - api.abc.com
+    secretName: abc-tls
+  rules:
+  - host: api.abc.com
+    http:
+      paths:
+      - backend:
+          serviceName: apiserver
+          servicePort: 80
+  - host: www.abc.com
+    http:
+      paths:
+      - path: /image/*
+        backend:
+          serviceName: fileserver
+          servicePort: 80
+  - host: www.abc.com
+    http:
+      paths:
+      - backend:
+          serviceName: feserver
+          servicePort: 8080
+```
+
+> ## ingress的部署
+
+```
+Deployment+LoadBalancer模式的Service [比较适合]
+
+Deployment+NodePort模式的Service
+
+DaemonSet+HostNetwork+nodeSelector
+```
+
+
+
+#### 3、Service、Ingress和Ingress Controller的关系
+
+```
+Service是后端真实服务的抽象，一个Service可以代表多个相同的后端服务。
+
+Ingress是反向代理规则，用来规定HTTP/HTTPS请求应该被转发到哪个Service上。例如根据请求中不同的Host和URL路径，让请求落到不同的 Service上。
+
+Ingress Controller是一个反向代理程序，负责解析Ingress的反向代理规则。如果Ingress有增删改的变动，Ingress Controller会及时更新自己相应的转发规则，当Ingress Controller收到请求后就会根据这些规则将请求转发到对应的Service。
+```
+
+#### 4、阿里云ASK的Ingress
+
+>  ALB Ingress Controller
+
+创建
+
+```
+方式一：创建集群时安装ALB Ingress Controller
+	创建ASK集群时，在Ingress参数配置区域，选择安装ALB Ingress。
+方式二：在组件管理页面安装ALB Ingress Controller
+  登录容器服务管理控制台。
+  在控制台左侧导航栏中，单击集群。
+  在集群列表页面中，单击目标集群名称或者目标集群右侧操作列下的详情。
+  在集群管理页左侧导航栏中，选择运维管理 > 组件管理。
+  单击其他页签，在ALB Ingress Controller组件区域单击安装。
+```
+
+访问服务
+
+
+
+```
+步骤：
+https://help.aliyun.com/document_detail/280446.html?spm=a2c4g.11186623.6.1270.50cf342evCTzAl
+1、创建 cafe-service.yaml  
+2、kubectl apply -f cafe-service.yaml
+3、kubectl get svc,deploy
+4、配置Ingress：创建并拷贝以下内容到cafe-ingress.yaml文件
+5、kubectl apply -f cafe-ingress.yaml
+6、kubectl get ingress
+7、通过浏览器访问coffee服务
+8、通过浏览器访问tea服务
+```
 
 
 
