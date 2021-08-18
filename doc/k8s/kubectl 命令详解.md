@@ -1,3 +1,8 @@
+## kubernetes kubectl apply -f和kubectl create -f有什么区别
+```
+https://blog.csdn.net/u013288190/article/details/109460283
+```
+
 ### 删除命令
 ```
 kubectl get pods
@@ -6,7 +11,10 @@ kubectl delete pod <podname> -n <namespace>
 kubectl get deployment -n <namespace>
 kubectl delete deployment <deployment名> -n <namespace>
 ```
-
+#### 查看service 访问地址
+```
+minikube service customers --url
+```
 ### 命令：kubectl describe pod
 
 ```
