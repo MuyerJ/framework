@@ -5,12 +5,12 @@ spring:
   cloud:
     gateway:
       routes:
-      - id: provider-service
-        uri: ${PROVIDER_ENDPOINT:http://localhost:8081}
+      - id: provider
+        uri: http://provider:8080
         predicates:
         - Path=/api/provider/**
-      - id: consumer-service
-        uri: ${CONSUMER_ENDPOINT:http://localhost:8082}
+      - id: consumer
+        uri: http://customers:8080
         predicates:
         - Path=/api/consumer/**
         filters:

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customers
+  labels:
+    app.kubernetes.io/name: customers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: customers
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: customers
+    spec:
+      containers:
+      - name: consumer
+        image: "registry.cn-hangzhou.aliyuncs.com/muyer-hub/hub1:customers-1.0"
+        imagePullPolicy: IfNotPresent
+        command: [ "sh", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: customers
+  labels:
+    app.kubernetes.io/name: customers
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8081
+    targetPort: 8081
+    protocol: TCP
+    name: http
+  selector:
+    app.kubernetes.io/name: customers
+

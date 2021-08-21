@@ -1,0 +1,20 @@
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: test #ClusterRoleBinding的名字
+subjects:
+- kind: ServiceAccount
+  name: test #serviceaccount资源对象的name
+  namespace: test #serviceaccount的namespace
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin #k8s集群中最高权限的角色
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: test # ServiceAccount的名字
+  namespace: test # serviceaccount的namespace
+  labels:
+    app: test #ServiceAccount的标签

@@ -14,10 +14,10 @@ spec:
     spec:
       containers:
         - name: customers
-          image: spring2go/spring-petclinic-customers-service:1.0.0.RELEASE
+          image: registry.cn-hangzhou.aliyuncs.com/muyer-hub/hub1:customers-1.0
           envFrom:
             - configMapRef:
-                name: petclinic-config
+                name: k8s-config
 ---
 apiVersion: v1
 kind: Service

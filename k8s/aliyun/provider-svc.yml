@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: provider
 spec:
   selector:
     matchLabels:
-      app: web
+      app: provider
   replicas: 2
   template:
     metadata:
       labels:
-        app: web
+        app: provider
     spec:
       containers:
-        - name: web
-          image: spring2go/spring-petclinic-web-app:1.0.0.RELEASE
+        - name: provider
+          image: registry.cn-hangzhou.aliyuncs.com/muyer-hub/hub1:provider-1.0
           envFrom:
             - configMapRef:
-                name: petclinic-config
+                name: k8s-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: web
+  name: provider
 spec:
   selector:
-    app: web
+    app: provider
   ports:
     - name: http
       port: 8080

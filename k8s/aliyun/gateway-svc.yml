@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway
+  name: gate3
 spec:
   selector:
     matchLabels:
-      app: gateway
+      app: gate3
   replicas: 2
   template:
     metadata:
       labels:
-        app: gateway
+        app: gate3
     spec:
       containers:
-        - name: gateway-service
-          image: registry.cn-hangzhou.aliyuncs.com/muyer-hub/hub1:gate-1
+        - name: gate3
+          image: registry.cn-hangzhou.aliyuncs.com/muyer-hub/hub1:gateway-3.0
           envFrom:
             - configMapRef:
-                name: petclinic-config
+                name: k8s-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: gateway
+  name: gate3
 spec:
   selector:
-    app: gateway
+    app: gate3
   ports:
     - name: http
       port: 8080

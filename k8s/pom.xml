@@ -11,6 +11,8 @@
     <modules>
         <module>k8s-gateway</module>
         <module>gateway</module>
+        <module>provider</module>
+        <module>consumer</module>
     </modules>
 
 
