@@ -1,6 +1,7 @@
 package com.muyer.provider.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,16 +14,13 @@ import java.net.UnknownHostException;
  * @author YeJiang
  * @version
  */
+@RequestMapping("/providers")
 @RestController
 public class ProviderController {
 
-    @GetMapping("/ping")
-    @ResponseBody
-    public String ping() {
-        try {
-            return InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            return "Pong";
-        }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "provider hello";
     }
 }

@@ -1,33 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gate3
+  name: gateway
 spec:
   selector:
     matchLabels:
-      app: gate3
+      app: gateway
   replicas: 2
   template:
     metadata:
       labels:
-        app: gate3
+        app: gateway
     spec:
+      serviceAccountName: test
       containers:
-        - name: gate3
-          image: registry.cn-hangzhou.aliyuncs.com/muyer-hub/hub1:gateway-3.0
-          envFrom:
-            - configMapRef:
-                name: k8s-config
+      - name: gateway-service
+        image: spring2go/spring-petclinic-cloud-gateway:1.0.0.RELEASE
+        envFrom:
+        - configMapRef:
+            name: k8s-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: gate3
+  name: gateway
 spec:
   selector:
-    app: gate3
+    app: gateway
   ports:
-    - name: http
-      port: 8080
-      targetPort: 8080
+  - name: http
+    port: 8080
+    targetPort: 8080
   type: LoadBalancer

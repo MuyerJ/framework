@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: customers-service
+server:
+  port: 8084
+
+product-infra-service:
+  ribbon:
+    KubernetesNamespace: default
+
+backend:
+  ribbon:
+    eureka:
+      enabled: false
+    client:
+      enabled: true
+    ServerListRefreshInterval: 5000
+
+hystrix:
+  command:
+    BackendCall:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+  threadpool:
+    BackendCallThread:
+      coreSize: 5
+feign:
+  hystrix:
+    enabled: true
+
+# Metrics
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    export:
+      prometheus:
+        enabled: true

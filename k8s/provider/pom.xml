@@ -63,6 +63,11 @@
             <version>2.1.1.RELEASE</version>
         </dependency>
 
+        <!--
+            We need that(actuator) so that it can be used in readiness probes.
+            Readiness checks are needed by arquillian, so that it
+            knows when to run the actual test.
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -79,7 +84,6 @@
 
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -122,7 +126,7 @@
                     <!-- docker私服的地址 -->
                     <dockerHost>http://www.51sou.top:2375</dockerHost>
                     <!--镜像名称以及版本号-->
-                    <imageName>provider:1.0</imageName>
+                    <imageName>k8s-provider:1.0</imageName>
                     <!--依赖的基础镜像-->
                     <baseImage>java</baseImage>
                     <!--Dockerfile的位置 -->
@@ -135,13 +139,16 @@
                             <include>${project.build.finalName}.jar</include>
                         </resource>
                     </resources>
+
                     <!--<buildArgs>-->
-                        <!--<ARTIFACT_NAME>${project.build.finalName}</ARTIFACT_NAME>-->
-                        <!--<EXPOSED_PORT>${docker.image.exposed.port}</EXPOSED_PORT>-->
+                    <!--<ARTIFACT_NAME>${project.build.finalName}</ARTIFACT_NAME>-->
+                    <!--<EXPOSED_PORT>${docker.image.exposed.port}</EXPOSED_PORT>-->
                     <!--</buildArgs>-->
+
                 </configuration>
             </plugin>
             <!-- Docker maven plugin -->
         </plugins>
     </build>
+
 </project>

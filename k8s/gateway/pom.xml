@@ -2,12 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.3.RELEASE</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
+
 
     <groupId>com.muyer</groupId>
     <artifactId>gateway</artifactId>
@@ -21,7 +22,7 @@
         <!-- Docker build -->
         <docker.image.prefix>spring2go</docker.image.prefix>
         <docker.image.exposed.port>8080</docker.image.exposed.port>
-        <dockerfile.plugin.version>1.3.6</dockerfile.plugin.version>
+        <dockerfile.plugin.version>1.4.13</dockerfile.plugin.version>
         <docker.image.tag>${project.version}</docker.image.tag>
         <dockerfile.maven.settings.auth>true</dockerfile.maven.settings.auth>
     </properties>

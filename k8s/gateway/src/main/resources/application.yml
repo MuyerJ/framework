@@ -4,14 +4,18 @@ server:
 spring:
   cloud:
     gateway:
+      #通过 predicates拦截 打到对应的uri上
       routes:
-      - id: provider
-        uri: http://provider:8080
+      - id: providers-service
+        uri: ${PROVIDER_ENDPOINT:http://localhost:8081}
         predicates:
         - Path=/api/provider/**
-      - id: consumer
-        uri: http://customers:8080
-        predicates:
-        - Path=/api/consumer/**
         filters:
         - StripPrefix=2
+      - id: comsumers-service
+        uri: ${CUSTOMER_ENDPOINT:http://localhost:8082}
+        predicates:
+        - Path=/api/comsumer/**
+        filters:
+        - StripPrefix=2
+
