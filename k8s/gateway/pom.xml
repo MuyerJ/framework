@@ -110,7 +110,7 @@
                     <!-- docker私服的地址 -->
                     <dockerHost>http://www.51sou.top:2375</dockerHost>
                     <!--镜像名称以及版本号-->
-                    <imageName>gateway:3.0</imageName>
+                    <imageName>k8s-gateway:1.0</imageName>
                     <!--依赖的基础镜像-->
                     <!--<baseImage>java</baseImage>-->
                     <!--Dockerfile的位置 -->

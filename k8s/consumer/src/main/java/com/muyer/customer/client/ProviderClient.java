@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @version
  */
 @Component
-@FeignClient(name = "provider", fallback = ProviderFallBack.class) //feignclien 这里对应的name是k8s中service的name
+@FeignClient(name = "providers", fallback = ProviderFallBack.class) //feignclien 这里对应的name是k8s中service的name
 public interface ProviderClient {
 
     @RequestMapping(value = "/providers/hello", method = RequestMethod.GET)

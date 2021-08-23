@@ -15,7 +15,7 @@ spec:
       serviceAccountName: test
       containers:
       - name: providers
-        image: registry.cn-hangzhou.aliyuncs.com/muyer-hub/hub1:vets-simple-1.0
+        image: registry.cn-hangzhou.aliyuncs.com/muyer-hub/hub1:k8s-provider-1.0
         envFrom:
         - configMapRef:
             name: k8s-config
@@ -32,3 +32,9 @@ spec:
     port: 8080
     targetPort: 8080
   type: ClusterIP
+
+
+
+
+---
+/api/provider/providers/hello

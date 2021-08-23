@@ -15,7 +15,7 @@ spec:
       serviceAccountName: test
       containers:
       - name: gateway-service
-        image: spring2go/spring-petclinic-cloud-gateway:1.0.0.RELEASE
+        image: registry.cn-hangzhou.aliyuncs.com/muyer-hub/hub1:k8s-gateway-1.0
         envFrom:
         - configMapRef:
             name: k8s-config
