@@ -9,7 +9,7 @@ kubectl -n kube-system get svc
 
 ---------------------------------------
 apiVersion: extensions/v1beta1
-kind: Deployment
+kind: Deployment            
 metadata:
   name: coffee
 spec:

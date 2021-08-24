@@ -65,3 +65,16 @@ Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists fo
 Events:                      <none>
 
 ```
+
+### 查看/删除   角色权限
+```
+kubectl  get ClusterRole
+[root@izbp17twv6fy9wwer7878mz aliyun]# kubectl get serviceaccount --all-namespaces
+   test              default                              1         149m
+   test              test                                 1         148m
+   yejiang           default                              1         3h17m
+   yejiang           yejiang                              1         3h10m
+
+
+kubectl delete  clusterroles k8s-all-reader
+```
