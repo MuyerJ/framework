@@ -15,7 +15,7 @@ spec:
       serviceAccountName: test
       containers:
       - name: providers
-        image: registry.cn-hangzhou.aliyuncs.com/muyer-hub/hub1:k8s-provider-1.0
+        image: registry.cn-beijing.aliyuncs.com/edipao/docker_hub:provider-1.0
         envFrom:
         - configMapRef:
             name: k8s-config
