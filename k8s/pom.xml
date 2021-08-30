@@ -12,6 +12,7 @@
         <module>gateway</module>
         <module>provider</module>
         <module>consumer</module>
+        <module>discovery-demo</module>
     </modules>
 
 

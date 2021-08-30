@@ -34,11 +34,14 @@
 
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-kubernetes-core</artifactId>
-            <version>${springcloud.kubernetes.version}</version>
-        </dependency>
+        <!--
+         不用引入 SpringCloud-k8s-core,因为SpringCloud-k8s-discovery里面包含core模块
+        -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.cloud</groupId>-->
+            <!--<artifactId>spring-cloud-kubernetes-core</artifactId>-->
+            <!--<version>${springcloud.kubernetes.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>

@@ -5,84 +5,32 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.1.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.1.6.RELEASE</version>
+        <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>provider</artifactId>
-    <version>1.0.0.RELEASE</version>
-    <packaging>jar</packaging>
-    <description>Demo project for Spring Boot</description>
-
-    <properties>
-        <java.version>1.8</java.version>
-        <spring-boot.version>2.1.1.RELEASE</spring-boot.version>
-    </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <type>pom</type>
-                <scope>import</scope>
-                <version>${spring-boot.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
+    <groupId>com.muyer</groupId>
+    <artifactId>discovery-demo</artifactId>
 
     <dependencies>
-        <!--
-            不用引入 SpringCloud-k8s-core,因为SpringCloud-k8s-discovery里面包含core模块
-        -->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-kubernetes-core</artifactId>-->
-            <!--<version>1.0.1.RELEASE</version>-->
-        <!--</dependency>-->
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-kubernetes-discovery</artifactId>
-            <version>1.0.1.RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-commons</artifactId>
-            <version>2.1.1.RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>2.1.1.RELEASE</version>
-        </dependency>
-
+        <!--SpringBoot Web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.1.1.RELEASE</version>
         </dependency>
-
-        <!--
-            We need that(actuator) so that it can be used in readiness probes.
-            Readiness checks are needed by arquillian, so that it
-            knows when to run the actual test.
-        -->
+        <!--SpringBoot Actuator-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>2.1.1.RELEASE</version>
         </dependency>
-
+        <!--SpringCloud Kubernetes Discovery-->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.28</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-kubernetes</artifactId>
+            <version>1.0.2.RELEASE</version>
         </dependency>
     </dependencies>
+
 
 
     <build>
@@ -95,7 +43,6 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <!-- Spring Boot Actuator displays build-related information if a META-INF/build-info.properties file is present -->
                         <goals>
                             <goal>build-info</goal>
                         </goals>
@@ -119,8 +66,6 @@
                 </configuration>
             </plugin>
 
-
-            <!-- Docker maven plugin -->
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -129,11 +74,12 @@
                     <!-- docker私服的地址 -->
                     <dockerHost>http://www.51sou.top:2375</dockerHost>
                     <!--镜像名称以及版本号-->
-                    <imageName>k8s-provider:1.0</imageName>
+                    <imageName>discovery-demo:1.0</imageName>
                     <!--依赖的基础镜像-->
                     <baseImage>java</baseImage>
                     <!--Dockerfile的位置 -->
-                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                    <!--<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>-->
+                    <dockerDirectory>${project.basedir}</dockerDirectory>
                     <!-- 这里是复制 jar 包到 docker 容器指定目录配置 -->
                     <resources>
                         <resource>
@@ -143,15 +89,8 @@
                         </resource>
                     </resources>
 
-                    <!--<buildArgs>-->
-                    <!--<ARTIFACT_NAME>${project.build.finalName}</ARTIFACT_NAME>-->
-                    <!--<EXPOSED_PORT>${docker.image.exposed.port}</EXPOSED_PORT>-->
-                    <!--</buildArgs>-->
-
                 </configuration>
             </plugin>
-            <!-- Docker maven plugin -->
         </plugins>
     </build>
-
 </project>
