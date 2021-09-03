@@ -1,0 +1,20 @@
+#  服务动态配置需要设置"management.endpoint.restart.enabled=true"这个参数，否则启动会报错。
+management:         #Actuator 配置
+  server:
+    port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    restart:
+      enabled: true
+
+config:             #自定义程序中的 ConfigMap 参数配置
+  numberValue: 1
+  stringValue: 这是在程序中的配置
+  booleanValue: "true"
+
+secret:             #自定义程序中的 Secret 参数配置
+  username: application
+  password: 123456

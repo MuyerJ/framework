@@ -13,6 +13,7 @@
         <module>provider</module>
         <module>consumer</module>
         <module>discovery-demo</module>
+        <module>config-demo</module>
     </modules>
 
 

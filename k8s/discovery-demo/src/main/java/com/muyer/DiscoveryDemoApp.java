@@ -14,7 +14,14 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  *  2、注解@EnableDiscoveryClient 和 bean<DiscoveryClient>
  *      是Spring-cloud-k8s-core 提供的
  *
- *  3、spring.cloud.kubernetes.discovery.enabled=true配置
+ *  3、/instance?name接口可知：
+ *      1) spring-cloud-starter-k8s能够知道当前namespace下所有的service
+ *      2) 通过DiscoveryClient#getInstances(serviceName) 获取到服务的基本信息
+ *
+ *  4、配置参数 可参考：
+ *      spring.cloud.kubernetes.discovery.enabled=true 配置
+ *      KubernetesDiscoveryProperties
+ *      https://blog.csdn.net/qq_32641153/article/details/97750791
  *
  * date: 2021/8/30 11:00
  * @author YeJiang
