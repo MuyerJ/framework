@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <appenders>
+
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- 设置日志输出的格式 -->
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Filters>
+                <ThresholdFilter level="INFO"/>
+            </Filters>
+        </Console>
+
+        <RollingFile name="RollingFileInfo" fileName="F:/log/myLog.txt"
+                     filePattern="D:/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="INFO"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+        <!--注意！这个在阿里云控制后台右上角“查看Endpoint”可以去获取到，我这个是华东2（上海）的-->
+        <Loghub name="Loghub"
+                projectName="k8s-edipao-test"
+                logstore="test"
+                endpoint="cn-beijing.log.aliyuncs.com"
+                accessKeyId="LTAI5tDaY63RWPSCStztQNdv"
+                accessKey="sKipt9q5evGmfQZthU4SZMSatVC0Dm"
+                packageTimeoutInMS="3000"
+                logsCountPerPackage="4096"
+                logsBytesPerPackage="3145728"
+                memPoolSizeInByte="104857600"
+                retryTimes="3"
+                maxIOThreadSizeInPool="8"
+                topic="topic1"
+                source="source1"
+                timeFormat="yyyy-MM-dd'T'HH:mm:ssZ"
+                timeZone="UTC"
+                ignoreExceptions="true">
+            <PatternLayout pattern="%d %-5level [%thread] %logger{0}: %msg"/>
+            <Filters>
+                <ThresholdFilter level="INFO"/>
+            </Filters>
+        </Loghub>
+    </appenders>
+
+    <loggers>
+        <root level="all">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="Loghub"/>
+        </root>
+    </loggers>
+
+</Configuration>
