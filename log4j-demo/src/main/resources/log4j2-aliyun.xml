@@ -1,37 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration packages="com.aliyun.openservices.log.log4j">
-    <Properties>
-        <Property name="log.path">/data/logs/${spring.application.name}</Property>
-        <Property name="log.pattern">%-d{yyyy-MM-dd HH:mm:ss.SSS}|%p|%t|%X{X-B3-TraceId}|%m%n</Property>
-    </Properties>
     <appenders>
+
         <Console name="Console" target="SYSTEM_OUT">
             <!-- 设置日志输出的格式 -->
-            <PatternLayout>
-                <Pattern>${log.pattern}</Pattern>
-            </PatternLayout>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Filters>
                 <ThresholdFilter level="INFO"/>
             </Filters>
         </Console>
-
-        <!--<RollingFile name="RollingFileInfo" fileName="F:/log/myLog.txt"-->
-                     <!--filePattern="D:/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">-->
-            <!--<Filters>-->
-                <!--<ThresholdFilter level="INFO"/>-->
-            <!--</Filters>-->
-            <!--<PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>-->
-            <!--<Policies>-->
-                <!--<TimeBasedTriggeringPolicy/>-->
-                <!--<SizeBasedTriggeringPolicy size="100 MB"/>-->
-            <!--</Policies>-->
-        <!--</RollingFile>-->
         <Loghub name="Loghub"
                 projectName="k8s-edipao-test"
                 logstore="test"
                 endpoint="cn-beijing.log.aliyuncs.com"
-                accessKeyId="LTAI5tR6ry****rkkDcCfQHit"
-                accessKey="pSe56ef5zKV****fncsnPGoM"
+                accessKeyId="LTAI5tDaY6****CStztQNdv"
+                accessKey="sKipt9q5evGmf*****U4SZMSatVC0Dm"
                 packageTimeoutInMS="3000"
                 logsCountPerPackage="3"
                 logsBytesPerPackage="1"
@@ -53,7 +36,6 @@
     <loggers>
         <root level="all">
             <appender-ref ref="Console"/>
-            <!--<appender-ref ref="RollingFileInfo"/>-->
             <appender-ref ref="Loghub"/>
         </root>
     </loggers>
