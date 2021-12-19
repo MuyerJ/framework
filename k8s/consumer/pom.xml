@@ -127,6 +127,7 @@
 
 
             <!-- Docker maven plugin -->
+            <!--https://www.cnblogs.com/javalqf/p/12123525.html-->
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>

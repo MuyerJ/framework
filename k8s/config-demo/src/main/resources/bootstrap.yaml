@@ -3,6 +3,8 @@ spring:
     name: config-demo
   cloud:
     kubernetes:
+      discovery:
+        enabled: true
       reload:
         enabled: true
         mode: polling            #监听模式：
