@@ -25,19 +25,44 @@ import java.util.stream.Collectors;
  * @version
  */
 public class GasStationMain {
-    public static void main(String[] args) throws Exception {
-        //1.获取订单轨迹点列表
-        //List<Position> orderPosList = getOrderPosList();
-        Map<String, List<Position>> orderPosMap = getOrderPosMap();
-        for (String orderNo : orderPosMap.keySet()) {
-            List<Position> orderPosList = orderPosMap.get(orderNo);
-            handler(orderPosList);
-        }
 
+    public static int D5KM = 5000;
+    public static int D10KM = 10000;
+
+    public static void main(String[] args) throws Exception {
+        List<Position> orderPosList = getOrderPosList();
+        handlerWithX(orderPosList, D10KM);
 
     }
 
-    private static void handler(List<Position> orderPosList) {
+
+    private static void handlerWithX(List<Position> orderPosList, int x) {
+        //2.获取轨迹点附近x公里的加油站集合 gasList
+        List<GasStationDetail> gasStationDetails = GasStationExcel();
+        List<String> gasNames = Lists.newArrayList();
+        List<GasStationDetail> gasList = Lists.newArrayList();
+        for (Position pos : orderPosList) {
+            GasStationDetail minDistanceDetail = null;
+            for (GasStationDetail detail : gasStationDetails) {
+                if (gasNames.contains(detail.getGasName())) {
+                    continue;
+                }
+                double distance = DistanceUtil.getDistance(detail.getLng(), detail.getLat(), pos.getLng(), pos.getLat());
+                if (distance < x) {
+                    System.out.println(detail.getGasName() + " 距离 ：" + distance);
+                    minDistanceDetail = detail;
+                }
+            }
+            if (Objects.nonNull(minDistanceDetail) && !gasNames.contains(minDistanceDetail.getGasName())) {
+                gasNames.add(minDistanceDetail.getGasName());
+                gasList.add(minDistanceDetail);
+            }
+        }
+        System.out.println(gasList.stream().map(GasStationDetail::getGasName).sorted().collect(Collectors.joining(",")));
+        //3.遍历所有路径得到最优的路线
+    }
+
+    private static void handlerWithMin(List<Position> orderPosList) {
         //2.获取轨迹点附近x公里的加油站集合 gasList
         List<GasStationDetail> gasStationDetails = GasStationExcel();
         List<String> gasNames = Lists.newArrayList();
@@ -68,7 +93,7 @@ public class GasStationMain {
 
     private static List<Position> getOrderPosList() throws IOException {
         //读数据
-        Reader reader = new FileReader("F:" + File.separator + "团油数据\\OR00075764.txt");
+        Reader reader = new FileReader("F:" + File.separator + "团油数据\\济宁市-益阳市货车导航轨迹.txt");
         BufferedReader bufferedReader = new BufferedReader(reader);
         String lineStr;
         List<Position> list = new ArrayList<>();
