@@ -4,18 +4,19 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.muyer.mapplanning.excel.GasOilPriceDTO;
 import com.muyer.mapplanning.excel.GasStationDTO;
+import com.muyer.mapplanning.excel.LineDTO;
+import com.muyer.mapplanning.excel.PointDTO;
 import com.muyer.mapplanning.res.GasPriceDetail;
 import com.muyer.mapplanning.res.GasStationDetail;
 import com.muyer.mapplanning.res.Position;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -30,9 +31,72 @@ public class GasStationMain {
     public static int D10KM = 10000;
 
     public static void main(String[] args) throws Exception {
-        List<Position> orderPosList = getOrderPosList();
-        handlerWithX(orderPosList, D10KM);
+        writeLineExcel();
+    }
 
+
+    private static void writeLineExcel() {
+        List<String> fileList = getFileName("F:\\团油数据\\导航轨迹");
+        List<LineDTO> list = Lists.newArrayList();
+        for (String fileName : fileList) {
+            try {
+                List<Position> orderPosList = getOrderPosList(fileName);
+                StringBuilder sb = new StringBuilder();
+                int count = 1;
+                for (Position p : orderPosList) {
+                    sb.append(p.getLngLat()).append(",");
+                    if (count % 2 == 0) {
+                        //10个一条数据
+                        LineDTO line = new LineDTO();
+                        line.setLatLng(sb.toString().substring(0, sb.toString().length() - 1));
+                        list.add(line);
+                        sb = new StringBuilder();
+                        sb.append(p.getLngLat()).append(",");
+                    }
+                    count++;
+                }
+            } catch (IOException e) {
+
+            }
+
+        }
+        File file = new File("F:" + File.separator + "团油数据\\数据模板\\数据模板-前10条热点线路.xlsx");
+        EasyExcel.write(file, LineDTO.class).sheet("模板").doWrite(list);
+    }
+
+
+    private static void writeLineExcelTemplate() {
+        List<LineDTO> list = Lists.newArrayList();
+        LineDTO l1 = new LineDTO();
+        l1.setPartition("华北");
+        l1.setStart("北京");
+        l1.setLatLng("[116.427287,39.904983],[117.201538,39.085294],[114.514793,38.042225]");
+        LineDTO l2 = new LineDTO();
+        l2.setPartition("华东");
+        l2.setStart("上海");
+        l2.setLatLng("[121.473658,31.230378],[118.77085,32.051114],[120.199072,30.369281]");
+        LineDTO l3 = new LineDTO();
+        l3.setPartition("华南");
+        l3.setStart("广州");
+        l3.setLatLng("[113.272505,23.134003],[114.096479,22.511246],[113.461968,22.180771]");
+        list.add(l1);
+        list.add(l2);
+        list.add(l3);
+        File file = new File("F:" + File.separator + "团油数据\\数据模板-线.xlsx");
+        EasyExcel.write(file, LineDTO.class).sheet("模板").doWrite(list);
+    }
+
+    //写加油站到excel
+    private static void writePointExcel() {
+        List<PointDTO> points = GasStationExcel().stream().map(g -> {
+            PointDTO pointDTO = new PointDTO();
+            pointDTO.setName(g.getGasName());
+            pointDTO.setLngLat(g.getLng() + "," + g.getLat());
+            pointDTO.setProvince(StringUtils.isEmpty(g.getProvince()) ? g.getCity() : g.getProvince());
+            return pointDTO;
+        }).collect(Collectors.toList());
+        File file = new File("F:" + File.separator + "团油数据\\数据模板-加油站.xlsx");
+        EasyExcel.write(file, PointDTO.class).sheet("订单模板").doWrite(points);
     }
 
 
@@ -91,9 +155,9 @@ public class GasStationMain {
         //3.遍历所有路径得到最优的路线
     }
 
-    private static List<Position> getOrderPosList() throws IOException {
+    private static List<Position> getOrderPosList(String fileName) throws IOException {
         //读数据
-        Reader reader = new FileReader("F:" + File.separator + "团油数据\\济宁市-益阳市货车导航轨迹.txt");
+        Reader reader = new FileReader("F:" + File.separator + "团油数据\\导航轨迹\\" + fileName);
         BufferedReader bufferedReader = new BufferedReader(reader);
         String lineStr;
         List<Position> list = new ArrayList<>();
@@ -160,5 +224,27 @@ public class GasStationMain {
         } catch (Exception e) {
         }
         return resList;
+    }
+
+
+    public static List<String> getFileName(String path) {
+        List<String> list = Lists.newArrayList();
+        File f = new File(path);
+        if (!f.exists()) {
+            System.out.println(path + " not exists");
+            return list;
+        }
+
+        File fa[] = f.listFiles();
+        for (int i = 0; i < fa.length; i++) {
+            File fs = fa[i];
+//            if (fs.isDirectory()) {
+//                System.out.println(fs.getName() + " [目录]");
+//            } else {
+//                System.out.println(fs.getName());
+//            }
+            list.add(fs.getName());
+        }
+        return list;
     }
 }

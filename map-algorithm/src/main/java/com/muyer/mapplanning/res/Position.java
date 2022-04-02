@@ -15,6 +15,9 @@ public class Position {
 
     private double lng;
     private double lat;
-
     private List<GasStationDetail> nearStationList;
+
+    public String getLngLat() {
+        return "[" + lng +","+ lat + "]";
+    }
 }
