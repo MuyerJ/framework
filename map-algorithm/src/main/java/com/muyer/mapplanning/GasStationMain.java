@@ -27,15 +27,54 @@ import java.util.stream.Collectors;
  */
 public class GasStationMain {
 
-    public static int D5KM = 5000;
-    public static int D10KM = 10000;
-
     public static void main(String[] args) throws Exception {
-        writeLineExcel();
+        List<String> fileList = getFileName("F:\\团油数据\\导航轨迹");
+        String s = "济宁市-济宁市货车导航轨迹";
+        //获取团油所有加油站
+        List<GasStationDetail> gasStationDetails = GasStationExcel();
+        Map<String, GasStationDetail> res = Maps.newHashMap();
+        for (String fileName : fileList) {
+            List<Position> orderPosList = getOrderPosList(fileName);
+            Map<String, GasStationDetail> detailMap = handlerWithX(orderPosList, gasStationDetails, 5000);
+            //System.out.println(detailMap.size());
+            res.putAll(detailMap);
+            //handlerWithMin(orderPosList, gasStationDetails);
+        }
     }
 
 
-    private static void writeLineExcel() {
+    /**
+     * 10条路线经过的省市
+     * @throws IOException
+     */
+    public static void getProviceAndCity() throws IOException {
+        List<String> fileList = getFileName("F:\\团油数据\\导航轨迹");
+        //获取团油所有加油站
+        List<GasStationDetail> gasStationDetails = GasStationExcel();
+        Set<String> provinceSet = Sets.newHashSet();
+        Set<String> citySet = Sets.newHashSet();
+
+        Map<String, GasStationDetail> res = Maps.newHashMap();
+        for (String fileName : fileList) {
+            List<Position> orderPosList = getOrderPosList(fileName);
+            Map<String, GasStationDetail> detailMap = handlerWithX(orderPosList, gasStationDetails, 20000);
+            detailMap.values().forEach(o -> {
+                provinceSet.add(o.getProvince());
+                citySet.add(o.getCity());
+            });
+            //System.out.println(detailMap.size());
+            res.putAll(detailMap);
+            //handlerWithMin(orderPosList, gasStationDetails);
+        }
+        System.out.println(provinceSet.stream().collect(Collectors.joining(",")));
+        System.out.println(citySet.stream().collect(Collectors.joining(",")));
+    }
+
+
+    /**
+     * 生成：数据模板-前10条热点线路.xlsx
+     */
+    public static void writeLineExcel() {
         List<String> fileList = getFileName("F:\\团油数据\\导航轨迹");
         List<LineDTO> list = Lists.newArrayList();
         for (String fileName : fileList) {
@@ -65,29 +104,10 @@ public class GasStationMain {
     }
 
 
-    private static void writeLineExcelTemplate() {
-        List<LineDTO> list = Lists.newArrayList();
-        LineDTO l1 = new LineDTO();
-        l1.setPartition("华北");
-        l1.setStart("北京");
-        l1.setLatLng("[116.427287,39.904983],[117.201538,39.085294],[114.514793,38.042225]");
-        LineDTO l2 = new LineDTO();
-        l2.setPartition("华东");
-        l2.setStart("上海");
-        l2.setLatLng("[121.473658,31.230378],[118.77085,32.051114],[120.199072,30.369281]");
-        LineDTO l3 = new LineDTO();
-        l3.setPartition("华南");
-        l3.setStart("广州");
-        l3.setLatLng("[113.272505,23.134003],[114.096479,22.511246],[113.461968,22.180771]");
-        list.add(l1);
-        list.add(l2);
-        list.add(l3);
-        File file = new File("F:" + File.separator + "团油数据\\数据模板-线.xlsx");
-        EasyExcel.write(file, LineDTO.class).sheet("模板").doWrite(list);
-    }
-
-    //写加油站到excel
-    private static void writePointExcel() {
+    /**
+     * 数据模板-加油站.xlsx
+     */
+    public static void writePointExcel() {
         List<PointDTO> points = GasStationExcel().stream().map(g -> {
             PointDTO pointDTO = new PointDTO();
             pointDTO.setName(g.getGasName());
@@ -100,42 +120,47 @@ public class GasStationMain {
     }
 
 
-    private static void handlerWithX(List<Position> orderPosList, int x) {
-        //2.获取轨迹点附近x公里的加油站集合 gasList
-        List<GasStationDetail> gasStationDetails = GasStationExcel();
-        List<String> gasNames = Lists.newArrayList();
-        List<GasStationDetail> gasList = Lists.newArrayList();
+    /**
+     * 获取轨迹上x 米的加油站集合
+     * @param orderPosList
+     * @param x
+     */
+    public static Map<String, GasStationDetail> handlerWithX(List<Position> orderPosList, List<GasStationDetail> gasStationDetails, int x) {
+        Map<String, GasStationDetail> res = Maps.newHashMap();
+
         for (Position pos : orderPosList) {
             GasStationDetail minDistanceDetail = null;
             for (GasStationDetail detail : gasStationDetails) {
-                if (gasNames.contains(detail.getGasName())) {
+                if (res.keySet().contains(detail.getGasName())) {
                     continue;
                 }
                 double distance = DistanceUtil.getDistance(detail.getLng(), detail.getLat(), pos.getLng(), pos.getLat());
                 if (distance < x) {
-                    System.out.println(detail.getGasName() + " 距离 ：" + distance);
+                    //System.out.println(detail.getGasName() + " 距离 ：" + distance);
                     minDistanceDetail = detail;
                 }
             }
-            if (Objects.nonNull(minDistanceDetail) && !gasNames.contains(minDistanceDetail.getGasName())) {
-                gasNames.add(minDistanceDetail.getGasName());
-                gasList.add(minDistanceDetail);
+            if (Objects.nonNull(minDistanceDetail) && !res.keySet().contains(minDistanceDetail.getGasName())) {
+                res.put(minDistanceDetail.getGasName(), minDistanceDetail);
             }
         }
-        System.out.println(gasList.stream().map(GasStationDetail::getGasName).sorted().collect(Collectors.joining(",")));
+        //System.out.println(res.keySet().stream().sorted().collect(Collectors.joining(",")));
+        //System.out.println(res.keySet().size());
         //3.遍历所有路径得到最优的路线
+        return res;
     }
 
-    private static void handlerWithMin(List<Position> orderPosList) {
-        //2.获取轨迹点附近x公里的加油站集合 gasList
-        List<GasStationDetail> gasStationDetails = GasStationExcel();
-        List<String> gasNames = Lists.newArrayList();
-        List<GasStationDetail> gasList = Lists.newArrayList();
+    /**
+     * 获取轨迹上最近的加油站集合
+     * @param orderPosList
+     */
+    public static Map<String, GasStationDetail> handlerWithMin(List<Position> orderPosList, List<GasStationDetail> gasStationDetails) {
+        Map<String, GasStationDetail> res = Maps.newHashMap();
         for (Position pos : orderPosList) {
             double minDistance = 0;
             GasStationDetail minDistanceDetail = null;
             for (GasStationDetail detail : gasStationDetails) {
-                if (gasNames.contains(detail.getGasName())) {
+                if (res.keySet().contains(detail.getGasName())) {
                     continue;
                 }
                 double distance = DistanceUtil.getDistance(detail.getLng(), detail.getLat(), pos.getLng(), pos.getLat());
@@ -144,18 +169,17 @@ public class GasStationMain {
                     minDistanceDetail = detail;
                 }
             }
-            if (Objects.nonNull(minDistanceDetail) && !gasNames.contains(minDistanceDetail.getGasName())) {
-                gasNames.add(minDistanceDetail.getGasName());
-                gasList.add(minDistanceDetail);
-                //System.out.println(minDistance);
+            if (Objects.nonNull(minDistanceDetail) && !res.keySet().contains(minDistanceDetail.getGasName())) {
+                res.put(minDistanceDetail.getGasName(), minDistanceDetail);
             }
         }
-        //System.out.println(JSON.toJSONString(gasList));
-        System.out.println(gasList.stream().map(GasStationDetail::getGasName).sorted().collect(Collectors.joining(",")));
+        System.out.println(res.keySet().stream().sorted().collect(Collectors.joining(",")));
+        System.out.println(res.keySet().size());
         //3.遍历所有路径得到最优的路线
+        return res;
     }
 
-    private static List<Position> getOrderPosList(String fileName) throws IOException {
+    public static List<Position> getOrderPosList(String fileName) throws IOException {
         //读数据
         Reader reader = new FileReader("F:" + File.separator + "团油数据\\导航轨迹\\" + fileName);
         BufferedReader bufferedReader = new BufferedReader(reader);
@@ -172,7 +196,7 @@ public class GasStationMain {
         return list;
     }
 
-    private static Map<String, List<Position>> getOrderPosMap() throws IOException {
+    public static Map<String, List<Position>> getOrderPosMap() throws IOException {
         //读数据
         Reader reader = new FileReader("F:" + File.separator + "团油数据\\orderPosition10.txt");
         BufferedReader bufferedReader = new BufferedReader(reader);
@@ -195,7 +219,7 @@ public class GasStationMain {
         return resMap;
     }
 
-    private static List<GasStationDetail> GasStationExcel() {
+    public static List<GasStationDetail> GasStationExcel() {
         File file = new File("F:" + File.separator + "团油数据\\加油站.xlsx");
         List<GasStationDTO> list;
         List<GasStationDetail> resList = Lists.newArrayList();
@@ -203,6 +227,7 @@ public class GasStationMain {
             list = EasyExcel.read(file).autoTrim(true).head(GasStationDTO.class).sheet().doReadSync();
             for (GasStationDTO dto : list) {
                 GasStationDetail gasStationDetail = new GasStationDetail();
+                gasStationDetail.setId(dto.getProductNo());
                 gasStationDetail.setGasName(dto.getProductName());
                 Map<String, String> map = RegexUtils.addressPattern(dto.getDetailAddress());
                 gasStationDetail.setProvince(map.get(RegexUtils.PROVINCE));
