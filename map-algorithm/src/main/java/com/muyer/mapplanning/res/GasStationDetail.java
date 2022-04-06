@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Data
 public class GasStationDetail {
     //8.5元/升  ==>  1升能跑5000m
-    static double _default_oil_price = 8.5;
+    static double _default_oil_price = 8;
     private String id;
     private String gasName;
     private String province;
@@ -51,6 +51,26 @@ public class GasStationDetail {
         //长春基地的起点
         if (gasType == 3) {
             return 7.45;
+        }
+
+        //济宁基地的起点
+        if (gasType == 4) {
+            return 7.83;
+        }
+
+        //北京基地的起点
+        if (gasType == 5) {
+            return 8.1;
+        }
+
+        //济南基地的起点
+        if (gasType == 6) {
+            return 8.03;
+        }
+
+        //西安基地的起点
+        if (gasType == 7) {
+            return 8.06;
         }
         return priceList.stream().sorted(Comparator.comparing(GasPriceDetail::getVipPrice)).collect(Collectors.toList()).get(0).getVipPrice();
     }

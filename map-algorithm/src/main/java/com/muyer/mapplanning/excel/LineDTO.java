@@ -1,6 +1,7 @@
 package com.muyer.mapplanning.excel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.muyer.mapplanning.GasStationMain;
 import lombok.Data;
 
 /**
@@ -19,4 +20,8 @@ public class LineDTO {
     private String partition;
     @ExcelProperty(value = "经纬度")
     private String latLng;
+
+    public static void main(String[] args) {
+        GasStationMain.writeLineExcel();
+    }
 }
