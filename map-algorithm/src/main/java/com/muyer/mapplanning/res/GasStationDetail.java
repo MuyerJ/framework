@@ -24,6 +24,7 @@ public class GasStationDetail {
     private String region;
     private double lng;
     private double lat;
+    private double oilAmount;
     //0 代表正常加油站，1代表发车地，2代表收车地
     private int gasType = 0;
     private List<GasPriceDetail> priceList = Lists.newArrayList();
@@ -48,31 +49,43 @@ public class GasStationDetail {
             return 0;
         }
 
+        double price = 0;
+
         //长春基地的起点
         if (gasType == 3) {
-            return 7.45;
+            price = 7.45;
         }
 
         //济宁基地的起点
         if (gasType == 4) {
-            return 7.83;
+            price = 7.83;
         }
 
         //北京基地的起点
         if (gasType == 5) {
-            return 8.1;
+            price = 8.1;
         }
 
         //济南基地的起点
         if (gasType == 6) {
-            return 8.03;
+            price = 8.03;
         }
 
         //西安基地的起点
         if (gasType == 7) {
-            return 8.06;
+            price = 8.06;
         }
-        return priceList.stream().sorted(Comparator.comparing(GasPriceDetail::getVipPrice)).collect(Collectors.toList()).get(0).getVipPrice();
+
+        if (gasType >= 1) {
+            return price;
+        }
+        for (GasPriceDetail detail : priceList) {
+            if (detail.getOilNo() == 0) {
+                return detail.getVipPrice();
+            }
+        }
+
+        return price;
     }
 
 }

@@ -50,7 +50,7 @@ public class SubSet {
         List<String> res = Lists.newArrayList();
         for (ArrayList<Integer> each : result) {
             if (CollectionUtils.isEmpty(each) ||
-                    !CollectionUtils.isEmpty(each) && each.size() > 4) {
+                    !CollectionUtils.isEmpty(each) && each.size() > 5) {
                 continue;
             }
             String join = StringUtils.join(each, ",");

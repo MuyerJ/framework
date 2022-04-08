@@ -7,7 +7,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.muyer.mapplanning.excel.AvgPriceDTO;
-import com.muyer.mapplanning.excel.LineDTO;
+import com.muyer.mapplanning.excel.PointDTO;
+import com.muyer.mapplanning.res.GasPriceDetail;
 import com.muyer.mapplanning.res.GasStationDetail;
 import com.muyer.mapplanning.res.Position;
 import org.apache.commons.lang3.StringUtils;
@@ -15,9 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Description: 
@@ -31,6 +34,9 @@ public class PlanningUtil {
     public static String app_key = "";
 
     public static RestTemplate restTemplate = new RestTemplate();
+    public static double avg_oil_wear = 6.76;
+    public static Map<String, Double> oilWearMap = Maps.newHashMap();
+    public static Map<String, Integer> routeOrderCountMap = Maps.newHashMap();
     public static List<GasStationDetail> gasStationDetails;
     public static List<String> fileList;
     public static Map<String, DistanceDTO> distanceMap = Maps.newHashMap();
@@ -40,10 +46,17 @@ public class PlanningUtil {
         before();
 
         List<AvgPriceDTO> avgList = Lists.newArrayListWithCapacity(50);
+        Map<String, PointDTO> niceGasMap = Maps.newHashMap();
 
         for (String fileName : fileList) {
             //行车轨迹
             List<Position> orderPosList = GasStationMain.getOrderPosList(fileName);
+            String routeName = fileName.replace("货车导航轨迹.txt", "");
+            //获取油耗
+            double oilWear = Objects.nonNull(oilWearMap.get(routeName)) &&
+                    oilWearMap.get(routeName) > 0 ?
+                    oilWearMap.get(routeName) :
+                    avg_oil_wear;
 
             //轨迹上5公里的加油站,并排序
             int type = 1;
@@ -104,6 +117,7 @@ public class PlanningUtil {
             double minMoney = 0;
             double minMoneyDistance = 0;
             String minPath = "";
+            String minPathOil = "";
             File file = new File("F:\\团油数据\\最优路线计算结果\\" + fileName);
             if (!file.exists()) {
                 file.createNewFile();
@@ -112,6 +126,7 @@ public class PlanningUtil {
             Writer writer = new FileWriter(file, false);
             for (String path : pathList) {
                 StringBuilder sb = new StringBuilder("经过的油站:" + path);
+                StringBuilder oilAmountSb = new StringBuilder();
                 String[] indexs = path.split(",");
                 double totalMoney = 0;
                 double totalDistance = 0;
@@ -121,21 +136,28 @@ public class PlanningUtil {
                     GasStationDetail nowStation = stations.get(Integer.parseInt(indexs[i]));
                     double distance = getDistance(lastStation.getLng(), lastStation.getLat(),
                             nowStation.getLng(), nowStation.getLat());
-                    double money = MathUtil.mul(MathUtil.div(distance, 5000), lastStation.getCheap());
+                    double oilAmount = MathUtil.div(distance, oilWear * 1000);
+                    double money = MathUtil.mul(oilAmount, lastStation.getCheap());
                     totalMoney = MathUtil.add(totalMoney, money);
                     totalDistance = MathUtil.add(totalDistance, distance);
                     lastIndex = Integer.parseInt(indexs[i]);
                     sb.append("***出发地:" + lastStation.getGasName() + "|目的地:" + nowStation.getGasName() +
                             "|距离:" + distance + "|单价:" + lastStation.getCheap() + "|加油的钱：" + money);
+                    //非起点
+                    if (!"起点".equals(lastStation.getGasName())) {
+                        oilAmountSb.append(lastStation.getGasName()).append(":").append(oilAmount).append(",");
+                    }
                 }
 
                 GasStationDetail lastStation = stations.get(lastIndex);
                 GasStationDetail endPoint = stations.get(stations.size() - 1);
                 double distance = getDistance(lastStation.getLng(), lastStation.getLat(),
                         endPoint.getLng(), endPoint.getLat());
-                double money = MathUtil.mul(MathUtil.div(distance, 5000), lastStation.getCheap());
+                double oilAmount = MathUtil.div(distance, oilWear * 1000);
+                double money = MathUtil.mul(oilAmount, lastStation.getCheap());
                 totalMoney = MathUtil.add(totalMoney, money);
                 totalDistance = MathUtil.add(totalDistance, distance);
+                oilAmountSb.append(lastStation.getGasName()).append(":").append(oilAmount);
                 sb.append("***出发地:" + lastStation.getGasName() + "|目的地:" + endPoint.getGasName() +
                         "|距离:" + distance + "|单价:" + lastStation.getCheap() + "|加油的钱：" + money);
                 sb.append(",totalMoney:" + totalMoney);
@@ -148,12 +170,13 @@ public class PlanningUtil {
                     minPath = path;
                     maxPath = path;
                 }
-                if (minMoney > totalMoney) {
+                if (minMoney >= totalMoney) {
                     minMoney = totalMoney;
                     minMoneyDistance = totalDistance;
                     minPath = path;
+                    minPathOil = oilAmountSb.toString();
                 }
-                if (maxMoney < totalMoney) {
+                if (maxMoney <= totalMoney) {
                     maxMoney = totalMoney;
                     maxMoneyDistance = totalDistance;
                     maxPath = path;
@@ -163,21 +186,56 @@ public class PlanningUtil {
             writer.write(", \r\n");
             writer.write("minMoney:" + minMoney + ",distance:" + minMoneyDistance + ",经过的油站:" + minPath);
             writer.write("\r\n");
+            writer.write("minMoneyOilUser:" + minPathOil);
+            writer.write("\r\n");
             double distance = getDistance(orderPosList.get(0).getLng(), orderPosList.get(0).getLat(),
                     orderPosList.get(orderPosList.size() - 1).getLng(), orderPosList.get(orderPosList.size() - 1).getLat());
             double money = MathUtil.mul(
                     MathUtil.div(getDistance(orderPosList.get(0).getLng(), orderPosList.get(0).getLat(),
-                            orderPosList.get(orderPosList.size() - 1).getLng(), orderPosList.get(orderPosList.size() - 1).getLat()), 5000),
+                            orderPosList.get(orderPosList.size() - 1).getLng(), orderPosList.get(orderPosList.size() - 1).getLat()), oilWear * 1000),
                     stations.get(0).getCheap());
             writer.write("money:" + money + ",distance:" + distance + "(原有方式)");
             writer.write("\r\n");
             writer.close();
-            avgList.add(new AvgPriceDTO(fileName.replace("货车导航轨迹.txt", ""), minMoney, money));
+            Integer orderCount = routeOrderCountMap.get(routeName);
+            avgList.add(new AvgPriceDTO(routeName, minMoney, money, Objects.nonNull(orderCount) ? orderCount : 0, MathUtil.div(distance, oilWear * 1000)));
+            //当此处规划省钱了，把相关的加油站缓存起来
+            if (money > minMoney) {
+                String[] pathArray = minPath.split(",");
+                String[] pathOilArray = minPathOil.split(",");
+                Map<String, Double> pathOilMap = Maps.newHashMap();
+                for (String pathOil : pathOilArray) {
+                    String[] pathOilSplit = pathOil.split(":");
+                    pathOilMap.put(pathOilSplit[0], Double.valueOf(pathOilSplit[1]));
+                }
+                for (String path : pathArray) {
+                    GasStationDetail station = stations.get(Integer.parseInt(path));
+                    String lngLat = station.getLng() + "," + station.getLat();
+                    PointDTO pointDTO = new PointDTO();
+                    pointDTO.setOil(pathOilMap.get(station.getGasName()));
+                    pointDTO.setName(station.getGasName());
+                    pointDTO.setLngLat(lngLat);
+                    pointDTO.setProvince(StringUtils.isEmpty(station.getProvince()) ? station.getCity() : station.getProvince());
+                    pointDTO.setCity(station.getCity());
+                    if (Objects.nonNull(niceGasMap.get(lngLat))) {
+                        pointDTO.setOil(MathUtil.add(pointDTO.getOil(), niceGasMap.get(lngLat).getOil()));
+                    }
+                    niceGasMap.put(lngLat, pointDTO);
+                }
+
+            }
         }
 
-        File file = new File("F:" + File.separator + "团油数据\\价格.xlsx");
-        EasyExcel.write(file, AvgPriceDTO.class).sheet("模板").doWrite(avgList);
         after();
+        //相关路线费用写入Excel
+        File file1 = new File("F:" + File.separator + "团油数据\\价格1.xlsx");
+        File file2 = new File("F:" + File.separator + "团油数据\\价格2.xlsx");
+        EasyExcel.write(file1, AvgPriceDTO.class).sheet("模板").doWrite(avgList);
+        EasyExcel.write(file2, AvgPriceDTO.class).sheet("模板").doWrite(avgList.stream().filter(o -> o.getMin() <= o.getNomal()).collect(Collectors.toList()));
+
+        //相关最优加油站写入Excel
+        File file3 = new File("F:" + File.separator + "团油数据\\最优油站点集.xlsx");
+        EasyExcel.write(file3, PointDTO.class).sheet("模板").doWrite(new ArrayList<>(niceGasMap.values()));
 
 
     }
@@ -205,10 +263,20 @@ public class PlanningUtil {
         //获取缓存
         //获取团油所有加油站
         gasStationDetails = GasStationMain.GasStationExcel();
+        //过滤没有0号油的油站
+        gasStationDetails = gasStationDetails.stream().filter(gas -> {
+            boolean has0Oil = false;
+            for (GasPriceDetail detail : gas.getPriceList()) {
+                if (detail.getOilNo() == 0) {
+                    has0Oil = true;
+                }
+            }
+            return has0Oil;
+        }).collect(Collectors.toList());
         fileList = GasStationMain.getFileName("F:\\团油数据\\导航轨迹-超过60个订单的路线");
         //fileList = Lists.newArrayList("重庆市-重庆市货车导航轨迹.txt");
 
-        //读数据
+        //读加油站之间距离缓存
         Reader reader = new FileReader("F:\\团油数据\\distance.txt");
         BufferedReader bufferedReader = new BufferedReader(reader);
         String lineStr = "";
@@ -220,6 +288,32 @@ public class PlanningUtil {
         }
         bufferedReader.close();
         reader.close();
+
+        //读取油耗缓存
+        Reader readOilWear = new FileReader("F:\\团油数据\\不同路线的油耗.txt");
+        BufferedReader readOilWearBufferedReader = new BufferedReader(new FileReader("F:\\团油数据\\不同路线的油耗.txt"));
+        String oilWearLineStr = "";
+        while ((oilWearLineStr = readOilWearBufferedReader.readLine()) != null) {
+            String[] split = oilWearLineStr.split(",");
+            double oilWear = Double.parseDouble(split[1]);
+            oilWearMap.put(split[0], oilWear);
+        }
+        readOilWearBufferedReader.close();
+        readOilWear.close();
+
+        //读取路线订单量
+        FileReader fr = new FileReader("F:\\团油数据\\路线单量.txt");
+        BufferedReader r = new BufferedReader(new FileReader("F:\\团油数据\\路线单量.txt"));
+        String s;
+        while ((s = r.readLine()) != null) {
+            String[] split = s.split(",");
+            int orderCount = Integer.parseInt(split[1]);
+            routeOrderCountMap.put(split[0], orderCount);
+        }
+        r.close();
+        fr.close();
+
+
     }
 
 
