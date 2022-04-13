@@ -73,7 +73,12 @@ public class GasStationDetail {
 
         //西安基地的起点
         if (gasType == 7) {
-            price = 8.06;
+            price = 7.96;
+        }
+
+        //青岛基地的起点
+        if (gasType == 7) {
+            price = 8.03;
         }
 
         if (gasType >= 1) {

@@ -182,7 +182,7 @@ public class GasStationMain {
 
     public static List<Position> getOrderPosList(String fileName) throws IOException {
         //读数据
-        Reader reader = new FileReader("F:" + File.separator + "团油数据\\导航轨迹-超过60个订单的路线\\" + fileName);
+        Reader reader = new FileReader("F:" + File.separator + "团油数据\\导航轨迹-西安青岛长春\\" + fileName);
         BufferedReader bufferedReader = new BufferedReader(reader);
         String lineStr;
         List<Position> list = new ArrayList<>();
@@ -274,3 +274,4 @@ public class GasStationMain {
         return list;
     }
 }
+

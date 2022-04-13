@@ -5,9 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Description: 
@@ -27,10 +25,29 @@ public class SubSet {
     }
 
     public static void main(String[] args) {
-        for (int i = 0; i < 10; i++) {
-            List<String> pathList = getPathList(i);
-            System.out.println(i + ":" + pathList.size());
+
+        for (int i = 0; i < 20; i++) {
+            System.out.println(getPathListV2(i));
+            System.out.println(getPathList( i));
         }
+
+    }
+
+    public static List<String> getPathListV2(int size){
+        int start = 1;
+        int end = size-2;
+        List<String> list = Lists.newArrayList();
+        for (int i = start; i <= end; i++) {
+            list.add(i+"");
+            for (int j = i + 1; j <= end; j++) {
+                list.add(i + "," + j);
+                for (int k = j + 1; k <= end; k++) {
+                    list.add(i + "," + j + "," + k);
+                }
+
+            }
+        }
+        return list;
     }
 
     /**
@@ -50,7 +67,7 @@ public class SubSet {
         List<String> res = Lists.newArrayList();
         for (ArrayList<Integer> each : result) {
             if (CollectionUtils.isEmpty(each) ||
-                    !CollectionUtils.isEmpty(each) && each.size() > 5) {
+                    !CollectionUtils.isEmpty(each) && each.size() > 3) {
                 continue;
             }
             String join = StringUtils.join(each, ",");

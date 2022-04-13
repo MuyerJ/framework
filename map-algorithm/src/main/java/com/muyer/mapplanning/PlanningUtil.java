@@ -38,6 +38,7 @@ public class PlanningUtil {
     public static Map<String, Double> oilWearMap = Maps.newHashMap();
     public static Map<String, Integer> routeOrderCountMap = Maps.newHashMap();
     public static List<GasStationDetail> gasStationDetails;
+    public static Map<String, GasStationDetail> gasStationDetailMap = Maps.newHashMap();
     public static List<String> fileList;
     public static Map<String, DistanceDTO> distanceMap = Maps.newHashMap();
 
@@ -70,6 +71,8 @@ public class PlanningUtil {
                 type = 6;
             } else if (fileName.contains("西安")) {
                 type = 7;
+            } else if (fileName.contains("青岛")) {
+                type = 8;
             }
             GasStationDetail startGas = new GasStationDetail("起点", orderPosList.get(0).getLng(), orderPosList.get(0).getLat(), type);
             List<GasStationDetail> stations = Lists.newArrayList(startGas);
@@ -94,7 +97,7 @@ public class PlanningUtil {
                 }
                 if (Objects.nonNull(minDistanceDetail) && !stationNames.contains(minDistanceDetail.getGasName())) {
                     GasStationDetail lastStation = stations.get(stations.size() - 1);
-                    if (DistanceUtil.getDistance(lastStation.getLng(), lastStation.getLat(), minDistanceDetail.getLng(), minDistanceDetail.getLat()) < 5000) {
+                    if (DistanceUtil.getDistance(lastStation.getLng(), lastStation.getLat(), minDistanceDetail.getLng(), minDistanceDetail.getLat()) < 10000) {
                         continue;
                     }
                     stationNames.add(minDistanceDetail.getGasName());
@@ -109,8 +112,10 @@ public class PlanningUtil {
             stations.add(endGas);
             //计算最划算的加油策略
             //出发地到第一个加油站距离
-            List<String> pathList = SubSet.getPathList(stations.size());
-            System.out.println(stations.size() + ":" + pathList.size());
+            System.out.print(stations.size() + ":");
+
+            List<String> pathList = SubSet.getPathListV2(stations.size());
+            System.out.println(pathList.size());
             double maxMoney = 0;
             double maxMoneyDistance = 0;
             String maxPath = "";
@@ -118,7 +123,7 @@ public class PlanningUtil {
             double minMoneyDistance = 0;
             String minPath = "";
             String minPathOil = "";
-            File file = new File("F:\\团油数据\\最优路线计算结果\\" + fileName);
+            File file = new File("F:\\团油数据\\最优路线计算结果-v2\\" + fileName);
             if (!file.exists()) {
                 file.createNewFile();
             }
@@ -224,17 +229,18 @@ public class PlanningUtil {
                 }
 
             }
+            after();
         }
 
         after();
         //相关路线费用写入Excel
-        File file1 = new File("F:" + File.separator + "团油数据\\价格1.xlsx");
-        File file2 = new File("F:" + File.separator + "团油数据\\价格2.xlsx");
+        File file1 = new File("F:" + File.separator + "团油数据\\价格1-v2.xlsx");
+        File file2 = new File("F:" + File.separator + "团油数据\\价格2-v2.xlsx");
         EasyExcel.write(file1, AvgPriceDTO.class).sheet("模板").doWrite(avgList);
         EasyExcel.write(file2, AvgPriceDTO.class).sheet("模板").doWrite(avgList.stream().filter(o -> o.getMin() <= o.getNomal()).collect(Collectors.toList()));
 
         //相关最优加油站写入Excel
-        File file3 = new File("F:" + File.separator + "团油数据\\最优油站点集.xlsx");
+        File file3 = new File("F:" + File.separator + "团油数据\\最优油站点集-v2.xlsx");
         EasyExcel.write(file3, PointDTO.class).sheet("模板").doWrite(new ArrayList<>(niceGasMap.values()));
 
 
@@ -259,7 +265,7 @@ public class PlanningUtil {
         writer.close();
     }
 
-    private static void before() throws Exception {
+    public static void before() throws Exception {
         //获取缓存
         //获取团油所有加油站
         gasStationDetails = GasStationMain.GasStationExcel();
@@ -271,9 +277,10 @@ public class PlanningUtil {
                     has0Oil = true;
                 }
             }
+            gasStationDetailMap.put(gas.getGasName(), gas);
             return has0Oil;
         }).collect(Collectors.toList());
-        fileList = GasStationMain.getFileName("F:\\团油数据\\导航轨迹-超过60个订单的路线");
+        fileList = GasStationMain.getFileName("F:\\团油数据\\导航轨迹-西安青岛长春");
         //fileList = Lists.newArrayList("重庆市-重庆市货车导航轨迹.txt");
 
         //读加油站之间距离缓存
