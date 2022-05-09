@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    username: dipao_read_only
+    password: k%ZJFrjSPy2z1!@YzkltClyX@QBbAGq&
+    url: jdbc:mysql://rr-2ze4h6n03h0dm8qrxho.mysql.rds.aliyuncs.com:3306/mybatis?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+
+

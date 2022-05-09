@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class PlanningUtil {
 
     //TODO 提交需要删除
-    public static String app_key = "";
+    public static String app_key = "7AKBZ-E36RF-OAYJM-JCAHX-UDAC5-GBB2G";
 
     public static RestTemplate restTemplate = new RestTemplate();
     public static double avg_oil_wear = 6.76;
@@ -81,6 +81,9 @@ public class PlanningUtil {
             for (Position pos : orderPosList) {
                 GasStationDetail minDistanceDetail = null;
                 for (GasStationDetail detail : gasStationDetails) {
+                    if ((type == 3 || type == 4 || type == 6) && !detail.getGasName().contains("品牌")) {
+                        continue;
+                    }
                     if (stationNames.contains(detail.getGasName())) {
                         continue;
                     }
@@ -205,30 +208,30 @@ public class PlanningUtil {
             Integer orderCount = routeOrderCountMap.get(routeName);
             avgList.add(new AvgPriceDTO(routeName, minMoney, money, Objects.nonNull(orderCount) ? orderCount : 0, MathUtil.div(distance, oilWear * 1000)));
             //当此处规划省钱了，把相关的加油站缓存起来
-            if (money > minMoney) {
-                String[] pathArray = minPath.split(",");
-                String[] pathOilArray = minPathOil.split(",");
-                Map<String, Double> pathOilMap = Maps.newHashMap();
-                for (String pathOil : pathOilArray) {
-                    String[] pathOilSplit = pathOil.split(":");
-                    pathOilMap.put(pathOilSplit[0], Double.valueOf(pathOilSplit[1]));
-                }
-                for (String path : pathArray) {
-                    GasStationDetail station = stations.get(Integer.parseInt(path));
-                    String lngLat = station.getLng() + "," + station.getLat();
-                    PointDTO pointDTO = new PointDTO();
-                    pointDTO.setOil(pathOilMap.get(station.getGasName()));
-                    pointDTO.setName(station.getGasName());
-                    pointDTO.setLngLat(lngLat);
-                    pointDTO.setProvince(StringUtils.isEmpty(station.getProvince()) ? station.getCity() : station.getProvince());
-                    pointDTO.setCity(station.getCity());
-                    if (Objects.nonNull(niceGasMap.get(lngLat))) {
-                        pointDTO.setOil(MathUtil.add(pointDTO.getOil(), niceGasMap.get(lngLat).getOil()));
-                    }
-                    niceGasMap.put(lngLat, pointDTO);
-                }
-
-            }
+//            if (money > minMoney) {
+//                String[] pathArray = minPath.split(",");
+//                String[] pathOilArray = minPathOil.split(",");
+//                Map<String, Double> pathOilMap = Maps.newHashMap();
+//                for (String pathOil : pathOilArray) {
+//                    String[] pathOilSplit = pathOil.split(":");
+//                    pathOilMap.put(pathOilSplit[0], Double.valueOf(pathOilSplit[1]));
+//                }
+//                for (String path : pathArray) {
+//                    GasStationDetail station = stations.get(Integer.parseInt(path));
+//                    String lngLat = station.getLng() + "," + station.getLat();
+//                    PointDTO pointDTO = new PointDTO();
+//                    pointDTO.setOil(pathOilMap.get(station.getGasName()));
+//                    pointDTO.setName(station.getGasName());
+//                    pointDTO.setLngLat(lngLat);
+//                    pointDTO.setProvince(StringUtils.isEmpty(station.getProvince()) ? station.getCity() : station.getProvince());
+//                    pointDTO.setCity(station.getCity());
+//                    if (Objects.nonNull(niceGasMap.get(lngLat))) {
+//                        pointDTO.setOil(MathUtil.add(pointDTO.getOil(), niceGasMap.get(lngLat).getOil()));
+//                    }
+//                    niceGasMap.put(lngLat, pointDTO);
+//                }
+//
+//            }
             after();
         }
 
@@ -280,7 +283,7 @@ public class PlanningUtil {
             gasStationDetailMap.put(gas.getGasName(), gas);
             return has0Oil;
         }).collect(Collectors.toList());
-        fileList = GasStationMain.getFileName("F:\\团油数据\\导航轨迹-西安青岛长春");
+        fileList = GasStationMain.getFileName("F:\\团油数据\\导航轨迹-超过60个订单的路线");
         //fileList = Lists.newArrayList("重庆市-重庆市货车导航轨迹.txt");
 
         //读加油站之间距离缓存

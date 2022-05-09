@@ -53,32 +53,32 @@ public class GasStationDetail {
 
         //长春基地的起点
         if (gasType == 3) {
-            price = 7.45;
+            price = 8.07;
         }
 
         //济宁基地的起点
         if (gasType == 4) {
-            price = 7.83;
+            price = 7.97;
         }
 
         //北京基地的起点
         if (gasType == 5) {
-            price = 8.1;
+            price = 8.03;
         }
 
         //济南基地的起点
         if (gasType == 6) {
-            price = 8.03;
+            price = 7.97;
         }
 
         //西安基地的起点
         if (gasType == 7) {
-            price = 7.96;
+            price = 8.31;
         }
 
         //青岛基地的起点
         if (gasType == 7) {
-            price = 8.03;
+            price = 7.78;
         }
 
         if (gasType >= 1) {

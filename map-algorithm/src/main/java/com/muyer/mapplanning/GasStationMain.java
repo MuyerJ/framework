@@ -19,6 +19,8 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.muyer.mapplanning.PlanningUtil.fileList;
+
 /**
  * Description: 
  * date: 2022/3/31 18:54
@@ -75,8 +77,6 @@ public class GasStationMain {
      * 生成：数据模板-前10条热点线路.xlsx
      */
     public static void writeLineExcel() {
-        //List<String> fileList = getFileName("F:\\团油数据\\导航轨迹");
-        List<String> fileList = Lists.newArrayList("重庆市-伊犁哈萨克自治州货车导航轨迹.txt");
         List<LineDTO> list = Lists.newArrayList();
         for (String fileName : fileList) {
             try {
@@ -182,7 +182,7 @@ public class GasStationMain {
 
     public static List<Position> getOrderPosList(String fileName) throws IOException {
         //读数据
-        Reader reader = new FileReader("F:" + File.separator + "团油数据\\导航轨迹-西安青岛长春\\" + fileName);
+        Reader reader = new FileReader("F:" + File.separator + "团油数据\\导航轨迹-超过60个订单的路线\\" + fileName);
         BufferedReader bufferedReader = new BufferedReader(reader);
         String lineStr;
         List<Position> list = new ArrayList<>();
