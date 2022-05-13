@@ -1,13 +1,8 @@
 package com.muyer.mapplanning.excel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.google.common.collect.Lists;
 import com.muyer.mapplanning.GasStationMain;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Description: 
@@ -25,6 +20,8 @@ public class LineDTO {
     private String partition;
     @ExcelProperty(value = "经纬度")
     private String latLng;
+    private double Lng;
+    private double lat;
 
     public static void main(String[] args) {
         GasStationMain.writeLineExcel();
