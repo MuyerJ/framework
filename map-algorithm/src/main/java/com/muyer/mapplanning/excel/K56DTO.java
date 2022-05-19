@@ -21,4 +21,10 @@ public class K56DTO {
     private long returnTruckTime;
     @ExcelProperty(value = "temp_license")
     private String tempLicense;
+    @ExcelProperty(value = "customer_full_name")
+    private String customerFullName;
+    @ExcelProperty(value = "发车时间")
+    private String t1;
+    @ExcelProperty(value = "收车时间")
+    private String t2;
 }
