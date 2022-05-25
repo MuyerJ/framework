@@ -18,7 +18,7 @@ public class KaiPiaoMain {
     static Writer writer;
 
     static {
-        File file = new File("F:" + File.separator + "updateSql.sql");
+        File file = new File("F:" + File.separator + "updateSql20220525.sql");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -37,9 +37,9 @@ public class KaiPiaoMain {
     }
 
     public static void main(String[] args) throws Exception {
-        String pre = "update `t_waybill` w , `t_main_order`  m set  w.`invoice_status` = 5 WHERE  w.`order_no` = m.`order_no` and w.`order_no`  = '%s' and m.`third_order_no` = '%s';";
+        String pre = "update `t_waybill` w , `t_main_order`  m set  w.`invoice_status` = 5 WHERE  w.`order_no` = m.`order_no` and w.`third_order_no`  = '%s' and m.`order_no` = '%s';";
 
-        List<KaiPiaoDTO> list = EasyExcel.read(new File("F:\\已开票运单信息(1).xlsx")).autoTrim(true)
+        List<KaiPiaoDTO> list = EasyExcel.read(new File("C:\\Users\\dell\\Documents\\WeChat Files\\wxid_z79lcgwgw4aa22\\FileStorage\\File\\2022-05\\已开票20220525.xlsx")).autoTrim(true)
                 .head(KaiPiaoDTO.class).sheet().doReadSync();
 
         for (KaiPiaoDTO dto : list) {
