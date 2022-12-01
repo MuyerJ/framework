@@ -5,7 +5,44 @@
     <file url="file://$PROJECT_DIR$/dubbo" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo/dubbo-sample" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo/spi" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/java-demo" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-cache/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-java-demo" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-java-demo/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-java-demo/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-k8s/config-demo/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-k8s/config-demo/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-k8s/consumer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-k8s/consumer/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-k8s/discovery-demo/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-k8s/discovery-demo/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-k8s/gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-k8s/gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-k8s/provider/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-k8s/provider/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-log4j-demo/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-log4j-demo/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-map-algorithm/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-map-algorithm/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-mysql/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-mysql/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-spingdata-jpa/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-spingdata-jpa/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springboot-docker-image/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springboot-docker-image/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springboot-security/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springboot-security/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springboot-thymeleaf/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springboot-thymeleaf/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springcloud-quick-start/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springcloud-quick-start/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springmvc-security/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springmvc-security/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springmvc-session-RBAC/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-springmvc-session-RBAC/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-xxl-job/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-xxl-job/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-zookeeper/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-zookeeper/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spingboot-web-mvc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud/spring-application" charset="UTF-8" />

@@ -2,12 +2,35 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/dubbo/dubbo.iml" filepath="$PROJECT_DIR$/dubbo/dubbo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-k8s/config-demo/config-demo.iml" filepath="$PROJECT_DIR$/framework-k8s/config-demo/config-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-k8s/consumer/customers.iml" filepath="$PROJECT_DIR$/framework-k8s/consumer/customers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-k8s/discovery-demo/discovery-demo.iml" filepath="$PROJECT_DIR$/framework-k8s/discovery-demo/discovery-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/dubbo/dubbo-sample/dubbo-sample.iml" filepath="$PROJECT_DIR$/dubbo/dubbo-sample/dubbo-sample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/java-demo/java-demo.iml" filepath="$PROJECT_DIR$/java-demo/java-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework.iml" filepath="$PROJECT_DIR$/framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-cache/framework-cache.iml" filepath="$PROJECT_DIR$/framework-cache/framework-cache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-design-patterns/framework-design-patterns.iml" filepath="$PROJECT_DIR$/framework-design-patterns/framework-design-patterns.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-java-demo/framework-java-demo.iml" filepath="$PROJECT_DIR$/framework-java-demo/framework-java-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-job/framework-job.iml" filepath="$PROJECT_DIR$/framework-job/framework-job.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-k8s/framework-k8s.iml" filepath="$PROJECT_DIR$/framework-k8s/framework-k8s.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-leetcode/framework-leetcode.iml" filepath="$PROJECT_DIR$/framework-leetcode/framework-leetcode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-log4j-demo/framework-log4j-demo.iml" filepath="$PROJECT_DIR$/framework-log4j-demo/framework-log4j-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-map-algorithm/framework-map-algorithm.iml" filepath="$PROJECT_DIR$/framework-map-algorithm/framework-map-algorithm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-mysql/framework-mysql.iml" filepath="$PROJECT_DIR$/framework-mysql/framework-mysql.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-netty-demo/framework-netty-demo.iml" filepath="$PROJECT_DIR$/framework-netty-demo/framework-netty-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-spingdata-jpa/framework-spingdata-jpa.iml" filepath="$PROJECT_DIR$/framework-spingdata-jpa/framework-spingdata-jpa.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-springboot-docker-image/framework-springboot-docker-image.iml" filepath="$PROJECT_DIR$/framework-springboot-docker-image/framework-springboot-docker-image.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-springboot-security/framework-springboot-security.iml" filepath="$PROJECT_DIR$/framework-springboot-security/framework-springboot-security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-springboot-thymeleaf/framework-springboot-thymeleaf.iml" filepath="$PROJECT_DIR$/framework-springboot-thymeleaf/framework-springboot-thymeleaf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-springcloud-quick-start/framework-springcloud-quick-start.iml" filepath="$PROJECT_DIR$/framework-springcloud-quick-start/framework-springcloud-quick-start.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-springmvc-security/framework-springmvc-security.iml" filepath="$PROJECT_DIR$/framework-springmvc-security/framework-springmvc-security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-springmvc-session-RBAC/framework-springmvc-session-RBAC.iml" filepath="$PROJECT_DIR$/framework-springmvc-session-RBAC/framework-springmvc-session-RBAC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-wechat/framework-wechat.iml" filepath="$PROJECT_DIR$/framework-wechat/framework-wechat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-xxl-job/framework-xxl-job.iml" filepath="$PROJECT_DIR$/framework-xxl-job/framework-xxl-job.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-zookeeper/framework-zookeeper.iml" filepath="$PROJECT_DIR$/framework-zookeeper/framework-zookeeper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-k8s/gateway/gateway.iml" filepath="$PROJECT_DIR$/framework-k8s/gateway/gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-k8s/provider/provider.iml" filepath="$PROJECT_DIR$/framework-k8s/provider/provider.iml" />
       <module fileurl="file://$PROJECT_DIR$/dubbo/spi/spi.iml" filepath="$PROJECT_DIR$/dubbo/spi/spi.iml" />
       <module fileurl="file://$PROJECT_DIR$/spingboot-web-mvc/spingboot-web-mvc.iml" filepath="$PROJECT_DIR$/spingboot-web-mvc/spingboot-web-mvc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/springcloud-parent.iml" filepath="$PROJECT_DIR$/springcloud-parent.iml" />
     </modules>
   </component>
 </project>

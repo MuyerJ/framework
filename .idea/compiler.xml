@@ -6,22 +6,86 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="framework-spingdata-jpa" />
+        <module name="framework-java-demo" />
+        <module name="framework-log4j-demo" />
+        <module name="framework-design-patterns" />
         <module name="dubbo-sample" />
-        <module name="java-demo" />
+        <module name="framework-springmvc-security" />
+        <module name="framework-springboot-security" />
+        <module name="framework-xxl-job" />
+        <module name="config-demo" />
+        <module name="framework-job" />
+        <module name="provider" />
+        <module name="framework-mysql" />
+        <module name="framework-wechat" />
+        <module name="framework-netty-demo" />
+        <module name="customers" />
+        <module name="framework-springmvc-session-RBAC" />
+        <module name="framework-cache" />
+        <module name="framework-springboot-thymeleaf" />
+        <module name="discovery-demo" />
+        <module name="framework-springboot-docker-image" />
+        <module name="framework-springcloud-quick-start" />
+        <module name="framework-map-algorithm" />
         <module name="spi" />
+        <module name="framework-leetcode" />
+        <module name="framework-zookeeper" />
         <module name="spingboot-web-mvc" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
+      <module name="config-demo" target="1.8" />
+      <module name="customers" target="1.8" />
+      <module name="discovery-demo" target="1.8" />
       <module name="dubbo" target="1.8" />
       <module name="dubbo-sample" target="1.8" />
-      <module name="java-demo" target="1.8" />
+      <module name="framework" target="1.5" />
+      <module name="framework-cache" target="1.6" />
+      <module name="framework-design-patterns" target="1.5" />
+      <module name="framework-java-demo" target="1.8" />
+      <module name="framework-job" target="1.5" />
+      <module name="framework-k8s" target="1.5" />
+      <module name="framework-leetcode" target="1.5" />
+      <module name="framework-log4j-demo" target="1.8" />
+      <module name="framework-map-algorithm" target="1.8" />
+      <module name="framework-mysql" target="1.8" />
+      <module name="framework-netty-demo" target="1.5" />
+      <module name="framework-spingdata-jpa" target="1.8" />
+      <module name="framework-springboot-docker-image" target="1.8" />
+      <module name="framework-springboot-security" target="1.8" />
+      <module name="framework-springboot-thymeleaf" target="1.8" />
+      <module name="framework-springcloud-quick-start" target="1.8" />
+      <module name="framework-springmvc-security" target="1.8" />
+      <module name="framework-springmvc-session-RBAC" target="1.8" />
+      <module name="framework-wechat" target="1.5" />
+      <module name="framework-xxl-job" target="1.8" />
+      <module name="framework-zookeeper" target="1.6" />
+      <module name="gateway" target="1.8" />
+      <module name="provider" target="1.8" />
       <module name="spi" target="6" />
       <module name="spingboot-web-mvc" target="1.8" />
       <module name="spring-application" target="1.8" />
       <module name="spring-web-mvc" target="1.8" />
       <module name="springcloud" target="1.8" />
-      <module name="springcloud-parent" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="config-demo" options="-parameters" />
+      <module name="customers" options="-parameters" />
+      <module name="discovery-demo" options="-parameters" />
+      <module name="framework-log4j-demo" options="-parameters" />
+      <module name="framework-map-algorithm" options="-parameters" />
+      <module name="framework-mysql" options="-parameters" />
+      <module name="framework-springboot-docker-image" options="-parameters" />
+      <module name="framework-springboot-security" options="-parameters" />
+      <module name="framework-springboot-thymeleaf" options="-parameters" />
+      <module name="framework-springcloud-quick-start" options="-parameters" />
+      <module name="framework-xxl-job" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="provider" options="-parameters" />
+    </option>
   </component>
 </project>
